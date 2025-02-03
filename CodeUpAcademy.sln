@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{78C70E77-C65E-4044-9B16-A35654CFDF6D}"
 EndProject
@@ -50,6 +50,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeUp.SharedKernel", "src\BuildingBlocks\CodeUp.SharedKernel\CodeUp.SharedKernel.csproj", "{149D0C5C-92D8-4514-9C85-94B28D066A3F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeUp.IntegrationEvents", "src\BuildingBlocks\CodeUp.IntegrationEvents\CodeUp.IntegrationEvents.csproj", "{EB2F0220-574D-4438-A8AE-EDDF6392ED74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeUp.Common", "src\BuildingBlocks\CodeUp.Common\CodeUp.Common.csproj", "{FD070FD2-4C97-40BC-BF66-3EF419B7962C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -121,6 +123,10 @@ Global
 		{EB2F0220-574D-4438-A8AE-EDDF6392ED74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB2F0220-574D-4438-A8AE-EDDF6392ED74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB2F0220-574D-4438-A8AE-EDDF6392ED74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD070FD2-4C97-40BC-BF66-3EF419B7962C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD070FD2-4C97-40BC-BF66-3EF419B7962C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD070FD2-4C97-40BC-BF66-3EF419B7962C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD070FD2-4C97-40BC-BF66-3EF419B7962C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -149,5 +155,6 @@ Global
 		{519A588A-BE2B-4B77-B9D4-F0D9C4985388} = {7ED1A101-6D2D-48BE-B66A-B55A2F86A77F}
 		{149D0C5C-92D8-4514-9C85-94B28D066A3F} = {7ED1A101-6D2D-48BE-B66A-B55A2F86A77F}
 		{EB2F0220-574D-4438-A8AE-EDDF6392ED74} = {7ED1A101-6D2D-48BE-B66A-B55A2F86A77F}
+		{FD070FD2-4C97-40BC-BF66-3EF419B7962C} = {7ED1A101-6D2D-48BE-B66A-B55A2F86A77F}
 	EndGlobalSection
 EndGlobal
