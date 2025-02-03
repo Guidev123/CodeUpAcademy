@@ -75,8 +75,7 @@ public sealed class TokenService(IUserRepository userRepository,
             .Select(c => new UserClaim(user.Id, c.Type, c.Value))
             .ToList();
 
-        if (newClaims.Count != 0)
-            await _userRepository.AddClaimsAsync(newClaims);
+        await _userRepository.AddClaimsAsync(newClaims);
 
         claims.AddRange(existingClaims);
         return claims;

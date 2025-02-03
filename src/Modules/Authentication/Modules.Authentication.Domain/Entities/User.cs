@@ -19,15 +19,16 @@ public class User : Entity, IAggregateRoot
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
     }
+    protected User() { }
 
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public Email Email { get; private set; }
-    public Phone Phone { get; private set; }
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public Email Email { get; private set; } = null!;
+    public Phone Phone { get; private set; } = null!;
     public DateTime BirthDate { get; private set; }
     public DateTime? LastLogin { get; private set; }
     public DateTime? LockoutEnd { get; private set; }
-    public string PasswordHash { get; private set; }
+    public string PasswordHash { get; private set; } = string.Empty;
     public int AccessFailedCount { get; private set; }
     public bool IsLockedOut { get; private set; }
     public bool EmailConfirmed { get; private set; }

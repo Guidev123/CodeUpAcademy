@@ -14,4 +14,11 @@
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.21.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Authentication\Modules.Authentication.Infrastructure\Modules.Authentication.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Courses\Modules.Courses.Infrastructure\Modules.Courses.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Students\Modules.Students.Infrastructure\Modules.Students.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Subscriptions\Modules.Subscriptions.Infrastructure\Modules.Subscriptions.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

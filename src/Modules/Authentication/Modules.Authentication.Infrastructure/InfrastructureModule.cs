@@ -1,8 +1,10 @@
 ﻿using CodeUp.Common.Extensions;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Modules.Authentication.Application.Services;
 using Modules.Authentication.Domain.Repositories;
+using Modules.Authentication.Infrastructure.Persistence;
 using Modules.Authentication.Infrastructure.Persistence.Repositories;
 using Modules.Authentication.Infrastructure.Services;
 
@@ -15,6 +17,7 @@ public static class InfrastructureModule
         services.AddModelSettings(configuration);
         services.AddRepositories();
         services.AddTokenService();
+        services.AddDbContext(configuration);
     }
 
     public static void AddRepositories(this IServiceCollection services) =>
@@ -27,4 +30,8 @@ public static class InfrastructureModule
     {
         services.Configure<JwtExtension>(options => configuration.GetSection(nameof(JwtExtension)));
     }
+
+    public static void AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
+        services.AddDbContext<AuthenticationDbContext>(opt =>
+        opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
 }

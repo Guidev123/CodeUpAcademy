@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeUp.SharedKernel.DomainObjects;
+using Microsoft.EntityFrameworkCore;
 using Modules.Authentication.Domain.Entities;
+using System.Reflection;
 
 namespace Modules.Authentication.Infrastructure.Persistence;
 
@@ -10,4 +12,23 @@ public sealed class AuthenticationDbContext(DbContextOptions<AuthenticationDbCon
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
     public DbSet<UserClaim> UserClaims { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.HasDefaultSchema("authentication");
+        modelBuilder.Ignore<Event>();
+
+        var properties = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(p => p.GetProperties())
+            .Where(p => p.ClrType == typeof(string)
+            && p.GetColumnType() == null);
+
+        foreach (var item in properties)
+        {
+            item.SetColumnType("VARCHAR(160)");
+            item.SetIsUnicode(false);
+        }
+
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(AuthenticationDbContext).Assembly);
+    }
 }
