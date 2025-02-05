@@ -136,7 +136,7 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LockoutEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("PasswordHashService")
                         .IsRequired()
                         .HasMaxLength(500)
                         .IsUnicode(false)

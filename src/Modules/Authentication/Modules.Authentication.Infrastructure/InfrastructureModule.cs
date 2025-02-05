@@ -14,9 +14,11 @@ public static class InfrastructureModule
 {
     public static void AddAutheticationModule(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHandlers();
         services.AddModelSettings(configuration);
         services.AddRepositories();
         services.AddTokenService();
+        services.AddPasswordHasherService();
         services.AddDbContext(configuration);
     }
 
@@ -25,6 +27,12 @@ public static class InfrastructureModule
 
     public static void AddTokenService(this IServiceCollection services) =>
         services.AddTransient<ITokenService, TokenService>();
+
+    public static void AddPasswordHasherService(this IServiceCollection services)
+        => services.AddTransient<IPasswordHasherService, PasswordHashService>();
+
+    public static void AddHandlers(this IServiceCollection services)
+        => services.AddMediatR(opt => opt.RegisterServicesFromAssembly(typeof(InfrastructureModule).Assembly));
 
     public static void AddModelSettings(this IServiceCollection services, IConfiguration configuration)
     {

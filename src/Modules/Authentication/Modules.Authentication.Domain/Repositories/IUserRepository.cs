@@ -4,6 +4,7 @@ namespace Modules.Authentication.Domain.Repositories;
 
 public interface IUserRepository : IDisposable
 {
+    Task CreateAsync(User user);    
     Task<List<string>> GetRolesAsync(Guid userId);
     Task<User?> GetByIdAsync(Guid id);
     Task<User?> GetByEmailAsync(string email);

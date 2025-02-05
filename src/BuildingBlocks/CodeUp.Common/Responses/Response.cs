@@ -27,4 +27,6 @@ public class Response<TData>
     public List<string?>? Errors { get; set; }
     public bool IsSuccess =>
         StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
+
+    public void AddError(string message) => Errors?.Add(message);
 }

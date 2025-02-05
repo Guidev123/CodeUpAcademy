@@ -6,5 +6,5 @@ namespace Modules.Authentication.Application.Commands.Register;
 public record RegisterUserCommand(
     string FirstName, string LastName,
     string Email, string Phone,
-    DateTime BirthDate, string PasswordHash
+    DateTime BirthDate, string Password
     ): CommandBase<LoginResponseDTO>;

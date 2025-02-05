@@ -43,4 +43,9 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
         _context.UserClaims.RemoveRange(claims);
         await _context.SaveChangesAsync();
     }
+
+    public async Task CreateAsync(User user)
+    {
+        await _context.AddAsync(user);
+    }
 }
