@@ -22,30 +22,26 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
     public async Task<User?> GetByEmailAsync(string email)
         => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Address == email);
 
-    public void Dispose()
-    {
-        _context.Dispose();
-        GC.SuppressFinalize(this);
-    }
 
     public async Task<List<UserClaim>> GetUserClaimsAsync(Guid userId) =>
          await _context.UserClaims.AsNoTracking().Where(c => c.UserId == userId).ToListAsync();
 
     public async Task AddClaimsAsync(List<UserClaim> claims)
-    {
-        await _context.UserClaims.AddRangeAsync(claims);
-        await _context.SaveChangesAsync();
-    }
+        => await _context.UserClaims.AddRangeAsync(claims);
 
     public async Task RemoveClaimsAsync(Guid userId)
     {
         var claims = _context.UserClaims.AsNoTracking().Where(c => c.UserId == userId);
-        _context.UserClaims.RemoveRange(claims);
+        _context.UserClaims.RemoveRange(_context.UserClaims.AsNoTracking().Where(c => c.UserId == userId));
         await _context.SaveChangesAsync();
     }
 
     public async Task CreateAsync(User user)
+        => await _context.AddAsync(user);
+
+    public void Dispose()
     {
-        await _context.AddAsync(user);
+        _context.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

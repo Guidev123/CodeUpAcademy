@@ -16,9 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Modules\Authentication\Modules.Authentication.Application\Modules.Authentication.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Authentication\Modules.Authentication.Infrastructure\Modules.Authentication.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Courses\Modules.Courses.Application\Modules.Courses.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Courses\Modules.Courses.Infrastructure\Modules.Courses.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Students\Modules.Students.Application\Modules.Students.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Students\Modules.Students.Infrastructure\Modules.Students.Infrastructure.csproj" />
+    <ProjectReference Include="..\..\Modules\Subscriptions\Modules.Subscriptions.Application\Modules.Subscriptions.Application.csproj" />
     <ProjectReference Include="..\..\Modules\Subscriptions\Modules.Subscriptions.Infrastructure\Modules.Subscriptions.Infrastructure.csproj" />
   </ItemGroup>
 

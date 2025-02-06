@@ -9,12 +9,15 @@ namespace Modules.Authentication.Application.Commands.Register;
 
 public sealed class RegisterUserHandler(IUserRepository userRepository,
                     ITokenService tokenService,
-                    IPasswordHasherService passwordHasher)
+                    IPasswordHasherService passwordHasher,
+                    IUnitOfWork uow)
     : ICommandHandler<RegisterUserCommand, LoginResponseDTO>
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;
     private readonly IPasswordHasherService _passwordHasher = passwordHasher;
+    private readonly IUnitOfWork _uow = uow;    
+
     public async Task<Response<LoginResponseDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
         var validation = new RegisterUserValidation().Validate(request);
@@ -31,6 +34,8 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         var user = request.MapToEntity(_passwordHasher.HashPassword(request.Password));
 
         await _userRepository.CreateAsync(user);
+        if (!await _uow.SaveChangesAsync())
+            return new(null, 400, "Invalid Operation", ["Fail to persist data"]);
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)

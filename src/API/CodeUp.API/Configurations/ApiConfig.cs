@@ -1,9 +1,18 @@
 ﻿using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace CodeUp.API.Configurations;
 
 public static class ApiConfig
 {
+    public static void AddHandlers(this WebApplicationBuilder builder)
+    {
+        var assemblyFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Modules.*.dll");
+
+        var assemblies = assemblyFiles.Select(Assembly.LoadFrom).ToArray();
+        builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblies(assemblies));
+    }
+
     public static void AddSwaggerConfig(this IServiceCollection services)
     {
         services.AddSwaggerGen(c =>

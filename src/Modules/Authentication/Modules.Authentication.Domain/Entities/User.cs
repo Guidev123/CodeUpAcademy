@@ -34,5 +34,6 @@ public class User : Entity, IAggregateRoot
     public bool EmailConfirmed { get; private set; }
     public bool PhoneConfirmed { get; private set; }
     public bool TwoFactorEnabled { get; private set; }
+    public List<Role> Roles { get; private set; }
 }
 
