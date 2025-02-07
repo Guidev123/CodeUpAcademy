@@ -1,4 +1,5 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
+using Modules.Authentication.Domain.Enums;
 using Modules.Authentication.Domain.ValueObjects;
 
 namespace Modules.Authentication.Domain.Entities;
@@ -18,7 +19,7 @@ public class User : Entity, IAggregateRoot
         EmailConfirmed = false;
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
-        AddClaim("SubscriptionType", "Free", new("StandardStudent"));
+        AddClaim(string.Format(nameof(SubscriptionTypeEnum)[..16]), nameof(SubscriptionTypeEnum.Free), new(nameof(SubscriptionNameEnum.StandardStudent)));
     }
     protected User() { }
 
