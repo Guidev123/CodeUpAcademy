@@ -30,6 +30,11 @@ public sealed class RegisterUserValidation : AbstractValidator<RegisterUserComma
             .Must(HasLowerCase).WithMessage("The password must contain at least one lowercase letter.")
             .Must(HasDigit).WithMessage("The password must contain at least one digit.")
             .Must(HasSpecialCharacter).WithMessage("The password must contain at least one special character (!@#$%^&* etc.).");
+
+        RuleFor(x => x.ConfirmPassword).Equal(x => x.Password).WithMessage("The passwords do not match")
+                .When(x => !string.IsNullOrEmpty(x.Password))
+                .NotEmpty().WithMessage("The password field cannot be empty.")
+                .MinimumLength(8).WithMessage("The password must be at least 8 characters long.");
     }
 
     private static bool HasUpperCase(string password) => password.Any(char.IsUpper);

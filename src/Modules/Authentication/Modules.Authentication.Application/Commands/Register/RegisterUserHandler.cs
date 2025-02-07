@@ -1,8 +1,10 @@
 ﻿using CodeUp.Common.Abstractions;
+using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
 using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Mappers;
 using Modules.Authentication.Application.Services;
+using Modules.Authentication.Domain.Entities;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Register;
@@ -10,37 +12,54 @@ namespace Modules.Authentication.Application.Commands.Register;
 public sealed class RegisterUserHandler(IUserRepository userRepository,
                     ITokenService tokenService,
                     IPasswordHasherService passwordHasher,
-                    IUnitOfWork uow)
-    : ICommandHandler<RegisterUserCommand, LoginResponseDTO>
+                    IUnitOfWork uow,
+                    INotificator notificator)
+                  : CommandHandlerBase<RegisterUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;
     private readonly IPasswordHasherService _passwordHasher = passwordHasher;
-    private readonly IUnitOfWork _uow = uow;    
+    private readonly IUnitOfWork _uow = uow;
+    private readonly INotificator _notificator = notificator;
 
-    public async Task<Response<LoginResponseDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public override async Task<Response<LoginResponseDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var validation = new RegisterUserValidation().Validate(request);
-        if (!validation.IsValid)
-        {
-            var errors = validation.Errors.Select(e => $"{e.PropertyName}: {e.ErrorMessage}").Cast<string?>().ToList();
-            return new(null, 400, "Invalid Operation", errors);
-        }
-
         var userExists = await _userRepository.GetByEmailAsync(request.Email);
         if (userExists is not null)
-            return new(null, 400, "Invalid Operation", ["User already exists"]);
+        {
+            Notify("User already exists");
+            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+        }
+
+        if (!ExecuteValidation(new RegisterUserValidation(), request))
+            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
 
         var user = request.MapToEntity(_passwordHasher.HashPassword(request.Password));
 
         await _userRepository.CreateAsync(user);
+        await _userRepository.AddClaimsAsync(user.ClaimsList.ToList());
+
         if (!await _uow.SaveChangesAsync())
-            return new(null, 400, "Invalid Operation", ["Fail to persist data"]);
+        {
+            Notify("Fail to persist data");
+            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+        }
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)
-            return new(null, 400, "Invalid Operation", ["Fail to authenticate user"]);
+        {
+            Notify("Fail to authenticate user");
+            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+        }
 
+        await RegisterLoginAsync(user);
         return new(token.Data, 201);
+    }
+
+    private async Task RegisterLoginAsync(User user)
+    {
+        user.RegisterLogin();
+        _userRepository.Update(user);
+        await _uow.SaveChangesAsync();
     }
 }

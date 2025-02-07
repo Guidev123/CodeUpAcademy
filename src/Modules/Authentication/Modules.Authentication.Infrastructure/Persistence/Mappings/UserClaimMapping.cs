@@ -21,9 +21,9 @@ public sealed class UserClaimMapping : IEntityTypeConfiguration<UserClaim>
             .IsRequired().HasColumnType("VARCHAR")
             .HasMaxLength(500);
 
-        builder.HasOne<User>()
-            .WithMany()
-            .HasForeignKey(uc => uc.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
+        builder.HasOne(uc => uc.Role)
+                    .WithMany()
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
     }
 }

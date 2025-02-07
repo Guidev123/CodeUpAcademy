@@ -18,6 +18,7 @@ public class User : Entity, IAggregateRoot
         EmailConfirmed = false;
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
+        AddClaim("SubscriptionType", "Free", new("StandardStudent"));
     }
     protected User() { }
 
@@ -34,6 +35,62 @@ public class User : Entity, IAggregateRoot
     public bool EmailConfirmed { get; private set; }
     public bool PhoneConfirmed { get; private set; }
     public bool TwoFactorEnabled { get; private set; }
-    public List<Role> Roles { get; private set; }
+    public List<UserClaim> Claims { get; private set; } = null!;
+
+    private readonly List<UserClaim> _claims = [];
+    public IReadOnlyCollection<UserClaim> ClaimsList => _claims.AsReadOnly();
+
+    public bool UserIsAbleToLogin() =>
+        !IsLockedOut || HandleLockedOut();
+
+    private bool HandleLockedOut()
+    {
+        var lockoutEnd = LockoutEnd <= DateTime.Now;
+        if (lockoutEnd)
+        {
+            ResetAccessFailedCount();
+            return true;
+        }
+
+        return false;
+    }
+
+    private void ResetAccessFailedCount()
+    {
+        IsLockedOut = false;
+        AccessFailedCount = 0;
+    }
+
+    public void AddAccessFailedCount()
+    {
+        if (AccessFailedCount >= 5)
+        {
+            BlockAccount();
+            return;
+        }
+
+        AccessFailedCount++;
+        LastLogin = DateTime.Now;
+    }
+
+    private void BlockAccount()
+    {
+        LockoutEnd = DateTime.Now.AddMinutes(10);
+        LastLogin = DateTime.Now;
+        IsLockedOut = true;
+    }
+
+    public void RegisterLogin()
+    {
+        LastLogin = DateTime.Now;
+    }
+
+    public void AddClaim(string claimType, string claimValue, Role role)
+    {
+        if (role is null)
+            throw new ArgumentNullException(nameof(role));
+
+        _claims.Add(new UserClaim(Id, claimType, claimValue, role));
+    }
 }
 

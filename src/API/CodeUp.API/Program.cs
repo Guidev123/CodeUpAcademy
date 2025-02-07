@@ -5,6 +5,7 @@ using Modules.Authentication.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerConfig();
+builder.AddModelsSettings();
 builder.AddHandlers();
 builder.Services.AddAutheticationModule(builder.Configuration);
 

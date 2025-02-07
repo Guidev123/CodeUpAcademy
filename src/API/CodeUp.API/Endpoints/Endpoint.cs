@@ -10,6 +10,7 @@ public static class Endpoint
 
         endpoints.MapGroup("api/v1/auth")
             .WithTags("Authentication")
+            .MapEndpoint<LoginUserEndpoint>()
             .MapEndpoint<RegisterUserEndpoint>();
     }
 

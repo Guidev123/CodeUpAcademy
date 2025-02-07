@@ -1,4 +1,5 @@
-﻿using Microsoft.OpenApi.Models;
+﻿using CodeUp.Common.Extensions;
+using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 namespace CodeUp.API.Configurations;
@@ -11,6 +12,11 @@ public static class ApiConfig
 
         var assemblies = assemblyFiles.Select(Assembly.LoadFrom).ToArray();
         builder.Services.AddMediatR(opt => opt.RegisterServicesFromAssemblies(assemblies));
+    }
+
+    public static void AddModelsSettings(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<JwtExtension>(builder.Configuration.GetSection(nameof(JwtExtension)));
     }
 
     public static void AddSwaggerConfig(this IServiceCollection services)

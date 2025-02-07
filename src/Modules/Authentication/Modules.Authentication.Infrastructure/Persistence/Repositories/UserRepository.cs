@@ -10,14 +10,16 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 
     public async Task<List<string>> GetRolesAsync(Guid userId)
     {
-        var userRole = await _context.UserRoles.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
-        var roles = await _context.Roles.AsNoTracking().Where(x => x.Id == userRole!.RoleId).ToListAsync();
-        return roles.Select(x => x.Name).ToList();
+        var user = await _context.Users.AsNoTrackingWithIdentityResolution()
+                                       .Include(u => u.Claims)
+                                       .ThenInclude(c => c.Role)
+                                       .FirstOrDefaultAsync(u => u.Id == userId);
+
+        return user?.Claims.Select(c => c.Role.Name).ToList() ?? [];
     }
 
     public async Task<User?> GetByIdAsync(Guid id) 
-        => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-
+        => await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<User?> GetByEmailAsync(string email)
         => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Email.Address == email);
@@ -31,13 +33,19 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 
     public async Task RemoveClaimsAsync(Guid userId)
     {
-        var claims = _context.UserClaims.AsNoTracking().Where(c => c.UserId == userId);
-        _context.UserClaims.RemoveRange(_context.UserClaims.AsNoTracking().Where(c => c.UserId == userId));
+        var claims = _context.UserClaims.Where(c => c.UserId == userId);
+        _context.UserClaims.RemoveRange(_context.UserClaims.Where(c => c.UserId == userId));
         await _context.SaveChangesAsync();
     }
 
     public async Task CreateAsync(User user)
         => await _context.AddAsync(user);
+
+    public async Task AddClaimAsync(UserClaim claims) 
+        => await _context.UserClaims.AddAsync(claims);
+
+    public void Update(User user)
+        => _context.Users.Update(user);
 
     public void Dispose()
     {

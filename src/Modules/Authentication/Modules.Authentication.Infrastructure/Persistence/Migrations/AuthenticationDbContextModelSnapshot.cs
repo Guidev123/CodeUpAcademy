@@ -69,35 +69,6 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.ToTable("Roles", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.RoleClaim", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ClaimType")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("ClaimValue")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
-
-                    b.ToTable("RoleClaims", "authentication");
-                });
-
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -136,7 +107,7 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.Property<DateTime?>("LockoutEnd")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("PasswordHashService")
+                    b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasMaxLength(500)
                         .IsUnicode(false)
@@ -174,25 +145,6 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserClaims", "authentication");
-                });
-
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");
 
@@ -203,19 +155,9 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.HasIndex("UserId", "RoleId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
-                    b.ToTable("UserRoles", "authentication");
-                });
-
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.RoleClaim", b =>
-                {
-                    b.HasOne("Modules.Authentication.Domain.Entities.Role", null)
-                        .WithMany()
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.ToTable("UserClaims", "authentication");
                 });
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
@@ -267,26 +209,26 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserClaim", b =>
                 {
-                    b.HasOne("Modules.Authentication.Domain.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
-                {
-                    b.HasOne("Modules.Authentication.Domain.Entities.Role", null)
+                    b.HasOne("Modules.Authentication.Domain.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Modules.Authentication.Domain.Entities.User", null)
-                        .WithMany()
+                    b.HasOne("Modules.Authentication.Domain.Entities.User", "User")
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Role");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Claims");
                 });
 #pragma warning restore 612, 618
         }

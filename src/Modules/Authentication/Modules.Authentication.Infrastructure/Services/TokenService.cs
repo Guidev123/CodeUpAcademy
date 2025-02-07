@@ -66,16 +66,10 @@ public sealed class TokenService(IUserRepository userRepository,
         };
 
         foreach (var role in userRoles)
-            claims.Add(new Claim(ClaimTypes.Role, role));
+            claims.Add(new("role", role));
 
         var userClaims = await _userRepository.GetUserClaimsAsync(user.Id);
         var existingClaims = userClaims.Select(uc => new Claim(uc.ClaimType, uc.ClaimValue)).ToList();
-
-        var newClaims = claims.Where(c => !existingClaims.Any(ec => ec.Type == c.Type && ec.Value == c.Value))
-            .Select(c => new UserClaim(user.Id, c.Type, c.Value))
-            .ToList();
-
-        await _userRepository.AddClaimsAsync(newClaims);
 
         claims.AddRange(existingClaims);
         return claims;

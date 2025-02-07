@@ -7,7 +7,7 @@ using Modules.Authentication.Application.DTOs;
 
 namespace CodeUp.API.Endpoints.Authentication;
 
-public class RegisterUserEndpoint : IEndpoint
+public sealed class RegisterUserEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync).Produces<Response<LoginResponseDTO>>();

@@ -14,7 +14,7 @@ public class Response<TData>
         TData? data,
         int? code = null,
         string? message = null,
-        List<string?>? errors = null)
+        List<string>? errors = null)
     {
         StatusCode = code ?? DEFAULT_STATUS_CODE;
         Data = data;
@@ -24,7 +24,7 @@ public class Response<TData>
 
     public TData? Data { get; set; }
     public string? Message { get; }
-    public List<string?>? Errors { get; set; }
+    public List<string>? Errors { get; set; }
     public bool IsSuccess =>
         StatusCode is >= DEFAULT_STATUS_CODE and <= 299;
 
