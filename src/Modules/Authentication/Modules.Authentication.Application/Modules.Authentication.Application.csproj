@@ -7,7 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\CodeUp.Common\CodeUp.Common.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.Common\CodeUp.Common.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.IntegrationEvents\CodeUp.IntegrationEvents.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Domain\CodeUp.SharedKernel\CodeUp.SharedKernel.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\CodeUp.Email\CodeUp.Email.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Infrastructure\CodeUp.MessageBus\CodeUp.MessageBus.csproj" />
     <ProjectReference Include="..\Modules.Authentication.Domain\Modules.Authentication.Domain.csproj" />
   </ItemGroup>
 

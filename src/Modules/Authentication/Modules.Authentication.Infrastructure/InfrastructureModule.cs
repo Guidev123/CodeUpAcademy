@@ -1,6 +1,4 @@
-﻿using CodeUp.Common.Extensions;
-using CodeUp.Common.Notifications;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Modules.Authentication.Application.Services;
@@ -16,7 +14,6 @@ public static class InfrastructureModule
 {
     public static void AddAutheticationModule(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddNotifications();
         services.AddRepositories();
         services.AddTokenService();
         services.AddPasswordHasherService();
@@ -28,9 +25,6 @@ public static class InfrastructureModule
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
-
-    public static void AddNotifications(this IServiceCollection services)
-        => services.AddScoped<INotificator, Notificator>();
 
     public static void AddTokenService(this IServiceCollection services) =>
         services.AddTransient<ITokenService, TokenService>();

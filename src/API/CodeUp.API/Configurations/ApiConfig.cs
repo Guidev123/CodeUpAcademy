@@ -1,11 +1,25 @@
 ﻿using CodeUp.Common.Extensions;
-using Microsoft.OpenApi.Models;
+using CodeUp.Common.Notifications;
+using CodeUp.Email;
+using CodeUp.Email.Models;
+using CodeUp.MessageBus;
+using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
 
 namespace CodeUp.API.Configurations;
 
 public static class ApiConfig
 {
+    public static void AddCommonConfig(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddSwaggerConfig();
+        builder.AddModelsSettings();
+        builder.AddEmailServices();
+        builder.AddNotifications();
+        builder.AddHandlers();
+        builder.AddMessageBusConfiguration();
+    }
+
     public static void AddHandlers(this WebApplicationBuilder builder)
     {
         var assemblyFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Modules.*.dll");
@@ -17,50 +31,21 @@ public static class ApiConfig
     public static void AddModelsSettings(this WebApplicationBuilder builder)
     {
         builder.Services.Configure<JwtExtension>(builder.Configuration.GetSection(nameof(JwtExtension)));
+        builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(nameof(EmailSettings)));
     }
 
-    public static void AddSwaggerConfig(this IServiceCollection services)
+    public static void AddNotifications(this WebApplicationBuilder builder) =>
+        builder.Services.AddScoped<INotificator, Notificator>();
+
+    public static void AddEmailServices(this WebApplicationBuilder builder)
     {
-        services.AddSwaggerGen(c =>
+        builder.Services.AddSendGrid(x =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo()
-            {
-                Title = "API CodeUp",
-                Contact = new OpenApiContact() { Name = "Guilherme Nascimento", Email = "guirafaelrn@gmail.com" },
-                License = new OpenApiLicense() { Name = "MIT", Url = new Uri("https://opensource.org/license/MIT") }
-            });
-
-            c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            {
-                Description = "Enter the JWT token in this format: Bearer {your token}",
-                Name = "Authorization",
-                Scheme = "Bearer",
-                BearerFormat = "JWT",
-                In = ParameterLocation.Header,
-                Type = SecuritySchemeType.ApiKey
-            });
-
-            c.AddSecurityRequirement(new OpenApiSecurityRequirement
-        {
-                {
-                    new OpenApiSecurityScheme
-                    {
-                        Reference = new OpenApiReference
-                        {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Bearer"
-                        }
-                    },
-                    Array.Empty<string>()
-                }
-            });
+            x.ApiKey = builder.Configuration.GetValue<string>("EmailSettings:ApiKey");
         });
+        builder.Services.AddScoped<IEmailService, EmailService>();
     }
 
-
-    public static void UseSwaggerConfig(this IApplicationBuilder app)
-    {
-        app.UseSwagger();
-        app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "v1"));
-    }
+    public static void AddMessageBusConfiguration(this WebApplicationBuilder builder) =>
+        builder.Services.AddMessageBus(builder.Configuration.GetMessageQueueConnection("MessageBus"));
 }

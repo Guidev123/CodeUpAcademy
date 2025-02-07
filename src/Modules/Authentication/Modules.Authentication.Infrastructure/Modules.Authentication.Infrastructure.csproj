@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\BuildingBlocks\CodeUp.Common\CodeUp.Common.csproj" />
     <ProjectReference Include="..\Modules.Authentication.Application\Modules.Authentication.Application.csproj" />
   </ItemGroup>
 

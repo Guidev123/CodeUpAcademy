@@ -58,6 +58,7 @@ public sealed class LoginUserHandler(INotificator notificator,
         await RegisterLoginAsync(user);
         return new(token.Data, 200);
     }
+
     private async Task RegisterLoginAsync(User user)
     {
         user.RegisterLogin();
