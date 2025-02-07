@@ -69,7 +69,7 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
         builder.Property(u => u.TwoFactorEnabled)
             .IsRequired();
 
-        builder.HasMany(x => x.Claims).WithOne(x => x.User).OnDelete(DeleteBehavior.Cascade);
-        builder.Ignore(u => u.ClaimsList);
+        builder.Property(u => u.IsActive)
+            .IsRequired();
     }
 }

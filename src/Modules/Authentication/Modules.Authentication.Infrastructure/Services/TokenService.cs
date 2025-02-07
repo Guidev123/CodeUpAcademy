@@ -15,9 +15,9 @@ using System.Text;
 namespace Modules.Authentication.Infrastructure.Services;
 
 public sealed class TokenService(IUserRepository userRepository,
-    IOptions<JwtExtension> jwtSettings,
-    AuthenticationDbContext context)
-    : ITokenService
+                                 IOptions<JwtExtension> jwtSettings,
+                                 AuthenticationDbContext context)
+                               : ITokenService
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly JwtExtension _jwtSettings = jwtSettings.Value;
@@ -25,12 +25,12 @@ public sealed class TokenService(IUserRepository userRepository,
     public async Task<Response<LoginResponseDTO>> GenerateJWT(string email)
     {
         var user = await GetUserByEmail(email);
-        if (user == null) return new(null, 404);
+        if (user is null) return new(null, 404);
 
         var userRoles = await GetUserRoles(user.Id);
         if (userRoles == null) return new(null, 404);
 
-        var claims = await BuildUserClaimsAsync(user, userRoles);
+        var claims = BuildUserClaimsAsync(user, userRoles);
         var tokenString = GenerateToken(claims);
 
         var refreshTokenResponse = await GenerateRefreshToken(user.Email.Address);
@@ -52,9 +52,9 @@ public sealed class TokenService(IUserRepository userRepository,
     #region Helpers
     private async Task<User?> GetUserByEmail(string email) => await _userRepository.GetByEmailAsync(email);
 
-    private async Task<List<string>?> GetUserRoles(Guid userId) => await _userRepository.GetRolesAsync(userId);
+    private async Task<ICollection<string>> GetUserRoles(Guid userId) => await _userRepository.GetUserRolesAsync(userId);
 
-    private async Task<List<Claim>> BuildUserClaimsAsync(User user, List<string> userRoles)
+    private static List<Claim> BuildUserClaimsAsync(User user, ICollection<string> userRoles)
     {
         var claims = new List<Claim>
         {
@@ -65,13 +65,8 @@ public sealed class TokenService(IUserRepository userRepository,
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
         };
 
-        foreach (var role in userRoles)
-            claims.Add(new("role", role));
+        claims.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role, x)));
 
-        var userClaims = await _userRepository.GetUserClaimsAsync(user.Id);
-        var existingClaims = userClaims.Select(uc => new Claim(uc.ClaimType, uc.ClaimValue)).ToList();
-
-        claims.AddRange(existingClaims);
         return claims;
     }
 

@@ -1,13 +1,14 @@
-﻿using CodeUp.SharedKernel.DomainObjects;
+﻿namespace Modules.Authentication.Domain.Entities;
 
-namespace Modules.Authentication.Domain.Entities;
-
-public class Role : Entity
+public class Role
 {
-    public Role(string name) => Name = name;
-    public string Name { get; private set; } = string.Empty;
+    public Role(string name, long id)
+    {
+        Name = name;
+        Id = id;
+    }
 
-    private readonly List<UserClaim> _claims = [];
-    public IReadOnlyCollection<UserClaim> Claims => _claims.AsReadOnly();
+    public long Id { get; private set; }
+    public string Name { get; private set; } = string.Empty;
 }
 

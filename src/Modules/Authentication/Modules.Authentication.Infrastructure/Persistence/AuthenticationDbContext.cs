@@ -1,7 +1,6 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
 using Microsoft.EntityFrameworkCore;
 using Modules.Authentication.Domain.Entities;
-using System.Reflection;
 
 namespace Modules.Authentication.Infrastructure.Persistence;
 
@@ -9,8 +8,8 @@ public sealed class AuthenticationDbContext(DbContextOptions<AuthenticationDbCon
 {
     public DbSet<User> Users { get; set; }
 	public DbSet<Role> Roles { get; set; }
+    public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }
-    public DbSet<UserClaim> UserClaims { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

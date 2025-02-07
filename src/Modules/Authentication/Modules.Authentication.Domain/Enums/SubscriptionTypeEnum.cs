@@ -2,6 +2,6 @@
 
 public enum SubscriptionTypeEnum
 {
-    Free,
-    Premium
+    Free = 1,
+    Premium = 2
 }

@@ -1,5 +1,4 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
-using Modules.Authentication.Domain.Enums;
 using Modules.Authentication.Domain.ValueObjects;
 
 namespace Modules.Authentication.Domain.Entities;
@@ -19,8 +18,9 @@ public class User : Entity, IAggregateRoot
         EmailConfirmed = false;
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
-        AddClaim(string.Format(nameof(SubscriptionTypeEnum)[..16]), nameof(SubscriptionTypeEnum.Free), new(nameof(SubscriptionNameEnum.StandardStudent)));
+        IsActive = true;
     }
+
     protected User() { }
 
     public string FirstName { get; private set; } = string.Empty;
@@ -32,14 +32,11 @@ public class User : Entity, IAggregateRoot
     public DateTime? LockoutEnd { get; private set; }
     public string PasswordHash { get; private set; } = string.Empty;
     public int AccessFailedCount { get; private set; }
+    public bool IsActive { get; private set; }
     public bool IsLockedOut { get; private set; }
     public bool EmailConfirmed { get; private set; }
     public bool PhoneConfirmed { get; private set; }
     public bool TwoFactorEnabled { get; private set; }
-    public List<UserClaim> Claims { get; private set; } = null!;
-
-    private readonly List<UserClaim> _claims = [];
-    public IReadOnlyCollection<UserClaim> ClaimsList => _claims.AsReadOnly();
 
     public bool UserIsAbleToLogin() =>
         !IsLockedOut || HandleLockedOut();
@@ -81,17 +78,9 @@ public class User : Entity, IAggregateRoot
         IsLockedOut = true;
     }
 
-    public void RegisterLogin()
-    {
-        LastLogin = DateTime.Now;
-    }
+    public void RegisterLogin() => LastLogin = DateTime.Now;
 
-    public void AddClaim(string claimType, string claimValue, Role role)
-    {
-        if (role is null)
-            throw new ArgumentNullException(nameof(role));
-
-        _claims.Add(new UserClaim(Id, claimType, claimValue, role));
-    }
+    public static UserRole AddRole(Guid userId, long roleId) => new(roleId, userId);
+    public void DesactivateAccount() => IsActive = false;
 }
 

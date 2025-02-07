@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -35,9 +37,9 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                 schema: "authentication",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "VARCHAR(100)", unicode: false, maxLength: 100, nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "VARCHAR(50)", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -59,6 +61,7 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     LockoutEnd = table.Column<DateTime>(type: "datetime2", nullable: true),
                     PasswordHash = table.Column<string>(type: "VARCHAR(500)", unicode: false, maxLength: 500, nullable: false),
                     AccessFailedCount = table.Column<int>(type: "int", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
                     IsLockedOut = table.Column<bool>(type: "bit", nullable: false),
                     EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
                     PhoneConfirmed = table.Column<bool>(type: "bit", nullable: false),
@@ -71,29 +74,25 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserClaims",
+                name: "UserRoles",
                 schema: "authentication",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ClaimType = table.Column<string>(type: "VARCHAR(255)", unicode: false, maxLength: 255, nullable: false),
-                    ClaimValue = table.Column<string>(type: "VARCHAR(500)", unicode: false, maxLength: 500, nullable: false),
-                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserClaims", x => x.Id);
+                    table.PrimaryKey("PK_UserRoles", x => new { x.RoleId, x.UserId });
                     table.ForeignKey(
-                        name: "FK_UserClaims_Roles_RoleId",
+                        name: "FK_UserRoles_Roles_RoleId",
                         column: x => x.RoleId,
                         principalSchema: "authentication",
                         principalTable: "Roles",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_UserClaims_Users_UserId",
+                        name: "FK_UserRoles_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "authentication",
                         principalTable: "Users",
@@ -101,16 +100,20 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_RoleId",
+            migrationBuilder.InsertData(
                 schema: "authentication",
-                table: "UserClaims",
-                column: "RoleId");
+                table: "Roles",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1L, "Free" },
+                    { 2L, "Premium" }
+                });
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserClaims_UserId",
+                name: "IX_UserRoles_UserId",
                 schema: "authentication",
-                table: "UserClaims",
+                table: "UserRoles",
                 column: "UserId");
         }
 
@@ -122,7 +125,7 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                 schema: "authentication");
 
             migrationBuilder.DropTable(
-                name: "UserClaims",
+                name: "UserRoles",
                 schema: "authentication");
 
             migrationBuilder.DropTable(

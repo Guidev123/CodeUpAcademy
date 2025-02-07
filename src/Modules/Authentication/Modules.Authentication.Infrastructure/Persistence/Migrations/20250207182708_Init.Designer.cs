@@ -12,8 +12,8 @@ using Modules.Authentication.Infrastructure.Persistence;
 namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20250206223707_Initial")]
-    partial class Initial
+    [Migration("20250207182708_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,33 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.Role", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("bigint");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("VARCHAR");
 
                     b.HasKey("Id");
 
                     b.ToTable("Roles", "authentication");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1L,
+                            Name = "Free"
+                        },
+                        new
+                        {
+                            Id = 2L,
+                            Name = "Premium"
+                        });
                 });
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
@@ -95,6 +106,9 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                         .HasMaxLength(100)
                         .IsUnicode(false)
                         .HasColumnType("VARCHAR");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("IsLockedOut")
                         .HasColumnType("bit");
@@ -127,40 +141,19 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.ToTable("Users", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserClaim", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ClaimType")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .IsUnicode(false)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<string>("ClaimValue")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("VARCHAR");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("RoleId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<long>("RoleId")
+                        .HasColumnType("bigint");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("RoleId");
+                    b.HasKey("RoleId", "UserId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", "authentication");
+                    b.ToTable("UserRoles", "authentication");
                 });
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
@@ -210,16 +203,16 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserClaim", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
                 {
                     b.HasOne("Modules.Authentication.Domain.Entities.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Modules.Authentication.Domain.Entities.User", "User")
-                        .WithMany("Claims")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -227,11 +220,6 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
-                {
-                    b.Navigation("Claims");
                 });
 #pragma warning restore 612, 618
         }

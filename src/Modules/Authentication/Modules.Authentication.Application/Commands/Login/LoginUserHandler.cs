@@ -1,7 +1,6 @@
 ﻿using CodeUp.Common.Abstractions;
 using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
-using Modules.Authentication.Application.Commands.Register;
 using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Services;
 using Modules.Authentication.Domain.Entities;

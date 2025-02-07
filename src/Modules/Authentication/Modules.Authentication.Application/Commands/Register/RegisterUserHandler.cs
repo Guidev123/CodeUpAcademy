@@ -5,6 +5,7 @@ using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Mappers;
 using Modules.Authentication.Application.Services;
 using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Enums;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Register;
@@ -36,8 +37,10 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
 
         var user = request.MapToEntity(_passwordHasher.HashPassword(request.Password));
 
+        var role = User.AddRole(user.Id, (long)SubscriptionTypeEnum.Free);
+
         await _userRepository.CreateAsync(user);
-        await _userRepository.AddClaimsAsync(user.ClaimsList.ToList());
+        await _userRepository.CreateUserRoleAsync(role);
 
         if (!await _uow.SaveChangesAsync())
         {

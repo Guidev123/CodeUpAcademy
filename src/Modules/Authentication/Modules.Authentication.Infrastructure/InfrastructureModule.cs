@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Modules.Authentication.Application.Services;
 using Modules.Authentication.Domain.Repositories;
 using Modules.Authentication.Infrastructure.Persistence;
+using Modules.Authentication.Infrastructure.Persistence.Interceptors;
 using Modules.Authentication.Infrastructure.Persistence.Repositories;
 using Modules.Authentication.Infrastructure.Services;
 
@@ -39,5 +40,6 @@ public static class InfrastructureModule
 
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
         services.AddDbContext<AuthenticationDbContext>(opt =>
-        opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? string.Empty));
+        opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection") ?? string.Empty)
+        .AddInterceptors(new SoftDeleteInterceptor()));
 }
