@@ -11,7 +11,7 @@ public sealed class RegisterUserEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
         => app.MapPost("/", HandleAsync).Produces<Response<LoginResponseDTO>>();
-    private static async Task<IResult> HandleAsync([FromServices] IMediator mediator, RegisterUserCommand command)
+    private static async Task<IResult> HandleAsync(IMediator mediator, RegisterUserCommand command)
     {
         var result = await mediator.Send(command);
         return result.IsSuccess ? TypedResults.Created($"/", result) : TypedResults.BadRequest(result);

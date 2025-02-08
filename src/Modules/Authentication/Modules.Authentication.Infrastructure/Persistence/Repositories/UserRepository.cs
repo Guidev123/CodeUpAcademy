@@ -29,10 +29,15 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
     public void Delete(User user)
         => _context.Users.Remove(user);
 
+    public async Task CreateUserTokenAsync(UserToken userToken)
+        => await _context.UserTokens.AddAsync(userToken);
+
+    public async Task<UserToken?> GetTokenByUserIdAsync(Guid userId)
+        => await _context.UserTokens.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
+
     public void Dispose()
     {
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
-
 }

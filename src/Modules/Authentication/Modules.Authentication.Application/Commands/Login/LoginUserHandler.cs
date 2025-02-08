@@ -11,14 +11,13 @@ namespace Modules.Authentication.Application.Commands.Login;
 public sealed class LoginUserHandler(INotificator notificator,
                                      IUserRepository userRepository,
                                      ITokenService tokenService,
-                                     IPasswordHasherService passwordHasherService,
+                                     IHasherService hasherService,
                                      IUnitOfWork uow)
                                    : CommandHandlerBase<LoginUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;
-    private readonly INotificator _notificator = notificator;
-    private readonly IPasswordHasherService _passwordHasherService = passwordHasherService;
+    private readonly IHasherService _hasherService = hasherService;
     private readonly IUnitOfWork _uow = uow;
 
     public override async Task<Response<LoginResponseDTO>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
@@ -39,7 +38,7 @@ public sealed class LoginUserHandler(INotificator notificator,
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
         }
 
-        var passwordMatch = _passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
+        var passwordMatch = _hasherService.VerifyPassword(request.Password, user.PasswordHash);
         if (!passwordMatch)
         {
             await UpdateUserAsync(user);

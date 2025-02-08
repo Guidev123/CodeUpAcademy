@@ -12,14 +12,14 @@ namespace Modules.Authentication.Application.Commands.Register;
 
 public sealed class RegisterUserHandler(IUserRepository userRepository,
                     ITokenService tokenService,
-                    IPasswordHasherService passwordHasher,
+                    IHasherService hasherService,
                     IUnitOfWork uow,
                     INotificator notificator)
                   : CommandHandlerBase<RegisterUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;
-    private readonly IPasswordHasherService _passwordHasher = passwordHasher;
+    private readonly IHasherService _hasherService = hasherService;
     private readonly IUnitOfWork _uow = uow;
 
     public override async Task<Response<LoginResponseDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -34,7 +34,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (!ExecuteValidation(new RegisterUserValidation(), request))
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
 
-        var user = request.MapToEntity(_passwordHasher.HashPassword(request.Password));
+        var user = request.MapToEntity(_hasherService.HashPassword(request.Password));
 
         var role = User.AddRole(user.Id, (long)SubscriptionTypeEnum.Free);
 

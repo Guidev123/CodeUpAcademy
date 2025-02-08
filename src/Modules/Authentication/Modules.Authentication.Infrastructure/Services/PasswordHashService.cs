@@ -2,8 +2,9 @@
 
 namespace Modules.Authentication.Infrastructure.Services;
 
-public sealed class PasswordHashService : IPasswordHasherService
+public sealed class PasswordHashService : IHasherService
 {
     public string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
     public bool VerifyPassword(string password, string hash) => BCrypt.Net.BCrypt.Verify(password, hash);
+    public string GenerateToken() => BCrypt.Net.BCrypt.GenerateSalt();
 }
