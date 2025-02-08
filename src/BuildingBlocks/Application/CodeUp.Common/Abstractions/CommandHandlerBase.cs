@@ -23,8 +23,9 @@ public abstract class CommandHandlerBase<TCommand, TResult>(INotificator notific
     protected void Notify(ValidationResult validationResult)
     {
         foreach (var item in validationResult.Errors) Notify(item.ErrorMessage);
-
     }
+
+    protected List<string> GetNotifications() => _notificator.GetNotifications().Select(x => x.Message).ToList();
 
     protected void Notify(string message) => _notificator.HandleNotification(new(message));
 

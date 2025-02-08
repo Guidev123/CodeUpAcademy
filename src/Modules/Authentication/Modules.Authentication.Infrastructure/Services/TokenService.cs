@@ -22,31 +22,35 @@ public sealed class TokenService(IUserRepository userRepository,
     private readonly IUserRepository _userRepository = userRepository;
     private readonly JwtExtension _jwtSettings = jwtSettings.Value;
     private readonly AuthenticationDbContext _context = context;
+
     public async Task<Response<LoginResponseDTO>> GenerateJWT(string email)
     {
         var user = await GetUserByEmail(email);
-        if (user is null) return new(null, 404);
+        if (user is null)
+            return Response<LoginResponseDTO>.Failure(["User not found"], "Invalid Operation", 404);
 
         var userRoles = await GetUserRoles(user.Id);
-        if (userRoles == null) return new(null, 404);
+        if (userRoles is null || userRoles.Count == 0)
+            return Response<LoginResponseDTO>.Failure(["User has no roles"], "Invalid Operation", 404);
 
         var claims = BuildUserClaimsAsync(user, userRoles);
         var tokenString = GenerateToken(claims);
 
         var refreshTokenResponse = await GenerateRefreshToken(user.Email.Address);
-        if (!refreshTokenResponse.IsSuccess || refreshTokenResponse.Data == null)
-            return new(null, 400);
+        if (!refreshTokenResponse.IsSuccess || refreshTokenResponse.Data is null)
+            return Response<LoginResponseDTO>.Failure(["Failed to generate refresh token"], "Invalid Operation");
 
         var result = GetTokenResponse(tokenString, user, claims, refreshTokenResponse.Data);
-        return new Response<LoginResponseDTO>(result, 201);
+        return Response<LoginResponseDTO>.Success(result, 201);
     }
 
     public async Task<Response<RefreshToken>> GetRefreshTokenAsync(Guid refreshToken)
     {
         var token = await _context.RefreshTokens.AsNoTracking().FirstOrDefaultAsync(rt => rt.Token == refreshToken);
 
-        return token is not null && token.ExpirationDate > DateTime.Now
-            ? new(token, 200) : new(null, 400);
+        return token is not null && token.ExpirationDate > DateTime.UtcNow
+            ? Response<RefreshToken>.Success(token)
+            : Response<RefreshToken>.Failure(["Invalid or expired refresh token"], "Invalid Operation");
     }
 
     #region Helpers
@@ -65,8 +69,7 @@ public sealed class TokenService(IUserRepository userRepository,
             new(JwtRegisteredClaimNames.Iat, ToUnixEpochDate(DateTime.UtcNow).ToString(), ClaimValueTypes.Integer64)
         };
 
-        claims.AddRange(userRoles.Select(x => new Claim(ClaimTypes.Role, x)));
-
+        claims.AddRange(userRoles.Select(role => new Claim(ClaimTypes.Role, role)));
         return claims;
     }
 
@@ -94,16 +97,15 @@ public sealed class TokenService(IUserRepository userRepository,
            claims.Select(c => new ClaimDTO { Type = c.Type, Value = c.Value })),
            TimeSpan.FromHours(_jwtSettings.ExpirationHours).TotalSeconds);
 
-
     private async Task<Response<RefreshToken>> GenerateRefreshToken(string email)
     {
-        var refreshToken = new RefreshToken(email, DateTime.Now.AddHours(_jwtSettings.RefreshTokenExpirationInHours));
+        var refreshToken = new RefreshToken(email, DateTime.UtcNow.AddHours(_jwtSettings.RefreshTokenExpirationInHours));
 
         _context.RefreshTokens.RemoveRange(_context.RefreshTokens.Where(rt => rt.UserEmail == email));
         await _context.RefreshTokens.AddAsync(refreshToken);
         await _context.SaveChangesAsync();
 
-        return new(refreshToken, 200);
+        return Response<RefreshToken>.Success(refreshToken, 200);
     }
 
     private static long ToUnixEpochDate(DateTime date)

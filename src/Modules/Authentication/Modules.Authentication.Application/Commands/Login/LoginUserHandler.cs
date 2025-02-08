@@ -24,19 +24,19 @@ public sealed class LoginUserHandler(INotificator notificator,
     public override async Task<Response<LoginResponseDTO>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new LoginUserValidation(), request))
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
         if (user is null)
         {
             Notify("User not found");
-            return new(null, 404, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         if (!user.UserIsAbleToLogin())
         {
             Notify("You have been temporarily blocked due to multiple failed login attempts with wrong credentials");
-            return new(null, 404, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
         }
 
         var passwordMatch = _passwordHasherService.VerifyPassword(request.Password, user.PasswordHash);
@@ -45,18 +45,18 @@ public sealed class LoginUserHandler(INotificator notificator,
             await UpdateUserAsync(user);
 
             Notify("User credentials are wrong");
-            return new(null, 404, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
         }
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)
         {
             Notify("Fail to authenticate user");
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         await RegisterLoginAsync(user);
-        return new(token.Data, 200);
+        return Response<LoginResponseDTO>.Success(token.Data);
     }
 
     private async Task RegisterLoginAsync(User user)

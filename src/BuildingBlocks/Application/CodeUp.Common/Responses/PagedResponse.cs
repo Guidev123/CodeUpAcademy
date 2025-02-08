@@ -1,38 +1,50 @@
-﻿namespace CodeUp.Common.Responses;
+﻿using System.Text.Json.Serialization;
+
+namespace CodeUp.Common.Responses;
+
 public class PagedResponse<TData> : Response<TData>
 {
     private const int DEFAULT_PAGE_SIZE = 10;
     private const int DEFAULT_PAGE = 1;
 
     public PagedResponse() { }
-    public PagedResponse(
+
+    protected PagedResponse(
+        TData? data,
         int totalCount,
-        TData? data = default,
         int currentPage = DEFAULT_PAGE,
         int pageSize = DEFAULT_PAGE_SIZE,
-        int code = DEFAULT_STATUS_CODE,
+        int? code = DEFAULT_SUCCESS_STATUS_CODE,
         string? message = null,
-        List<string?>? errors = null)
+        List<string>? errors = null)
         : base(data, code, message, errors)
     {
-        Data = data;
         TotalCount = totalCount;
         CurrentPage = currentPage;
         PageSize = pageSize;
-    }
-
-    public PagedResponse(
-        TData? data,
-        int code = DEFAULT_STATUS_CODE,
-        string? message = null,
-        List<string?>? errors = null)
-        : base(data, code, message, errors)
-    {
-
     }
 
     public int CurrentPage { get; set; }
     public int TotalPages => (int)Math.Ceiling(TotalCount / (double)PageSize);
     public int PageSize { get; set; } = DEFAULT_PAGE_SIZE;
     public int TotalCount { get; set; }
+
+    public static PagedResponse<TData> Success(
+        TData? data,
+        int totalCount,
+        int currentPage = DEFAULT_PAGE,
+        int pageSize = DEFAULT_PAGE_SIZE,
+        int code = DEFAULT_SUCCESS_STATUS_CODE,
+        string? message = null)
+    {
+        return new PagedResponse<TData>(data, totalCount, currentPage, pageSize, code, message);
+    }
+
+    public static PagedResponse<TData> Failure(
+        List<string> errors,
+        string? message = null,
+        int code = DEFAULT_ERROR_STATUS_CODE)
+    {
+        return new PagedResponse<TData>(default, 0, DEFAULT_PAGE, DEFAULT_PAGE_SIZE, code, message, errors);
+    }
 }

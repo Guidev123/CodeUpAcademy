@@ -11,17 +11,16 @@ public sealed class ForgotPasswordHandler(INotificator notificator,
                                           ForgotPasswordResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
-    private readonly INotificator _notificator = notificator;
     public override async Task<Response<ForgotPasswordResponse>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new ForgotPasswordValidation(), request))
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<ForgotPasswordResponse>.Failure(GetNotifications(), "Invalid Operation");
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
         if (user is null)
         {
             Notify("User not found");
-            return new(null, 404, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<ForgotPasswordResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
         }
 
         return new();

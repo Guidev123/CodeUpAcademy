@@ -21,7 +21,6 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
     private readonly ITokenService _tokenService = tokenService;
     private readonly IPasswordHasherService _passwordHasher = passwordHasher;
     private readonly IUnitOfWork _uow = uow;
-    private readonly INotificator _notificator = notificator;
 
     public override async Task<Response<LoginResponseDTO>> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
@@ -29,11 +28,11 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (userExists is not null)
         {
             Notify("User already exists");
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         if (!ExecuteValidation(new RegisterUserValidation(), request))
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
 
         var user = request.MapToEntity(_passwordHasher.HashPassword(request.Password));
 
@@ -45,18 +44,18 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (!await _uow.SaveChangesAsync())
         {
             Notify("Fail to persist data");
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)
         {
             Notify("Fail to authenticate user");
-            return new(null, 400, "Invalid Operation", _notificator.GetNotifications().Select(n => n.Message).ToList());
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         await RegisterLoginAsync(user);
-        return new(token.Data, 201);
+        return Response<LoginResponseDTO>.Success(token.Data, 201);
     }
 
     private async Task RegisterLoginAsync(User user)
