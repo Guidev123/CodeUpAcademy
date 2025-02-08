@@ -44,7 +44,7 @@ public sealed class LoginUserHandler(INotificator notificator,
             await UpdateUserAsync(user);
 
             Notify("User credentials are wrong");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
         var token = await _tokenService.GenerateJWT(request.Email);
