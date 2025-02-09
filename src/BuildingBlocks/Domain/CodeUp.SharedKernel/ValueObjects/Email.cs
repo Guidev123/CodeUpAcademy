@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Modules.Authentication.Domain.ValueObjects;
+namespace CodeUp.SharedKernel.ValueObjects;
 
 public record Email
 {

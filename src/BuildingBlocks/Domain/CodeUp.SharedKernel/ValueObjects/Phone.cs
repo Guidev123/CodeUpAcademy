@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace Modules.Authentication.Domain.ValueObjects;
+namespace CodeUp.SharedKernel.ValueObjects;
 
 public record Phone
 {
@@ -17,7 +17,7 @@ public record Phone
         Number = number;
     }
 
-    private static bool IsValidPhoneNumber(string phoneNumber) 
+    private static bool IsValidPhoneNumber(string phoneNumber)
     {
         var phoneRegex = new Regex(@"^\(\d{2}\)\s\d{4,5}-\d{4}$");
         return phoneRegex.IsMatch(phoneNumber);

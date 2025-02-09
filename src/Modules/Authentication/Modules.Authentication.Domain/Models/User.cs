@@ -1,5 +1,5 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
-using Modules.Authentication.Domain.ValueObjects;
+using CodeUp.SharedKernel.ValueObjects;
 
 namespace Modules.Authentication.Domain.Models;
 
