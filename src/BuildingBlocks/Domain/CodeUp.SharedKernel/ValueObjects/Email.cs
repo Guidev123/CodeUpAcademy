@@ -2,7 +2,7 @@
 
 namespace CodeUp.SharedKernel.ValueObjects;
 
-public record Email
+public record Email : ValueObject
 {
     public const int ADDRESS_MAX_LENGTH = 254;
     public const int ADDRESS_MIN_LENGTH = 5;

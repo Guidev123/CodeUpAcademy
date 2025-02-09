@@ -2,7 +2,7 @@
 
 namespace CodeUp.SharedKernel.ValueObjects;
 
-public record Phone
+public record Phone : ValueObject
 {
     public string Number { get; }
 
