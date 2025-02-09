@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Repositories;
@@ -28,7 +28,10 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 
     public async Task DeleteAsync(User user)
         => await _context.Database.ExecuteSqlInterpolatedAsync(
-            $"UPDATE authentication.Users SET IsActive = 0 WHERE Id = {user.Id}");
+            @$"UPDATE authentication.Users
+                SET IsDeleted = 1,
+                    DeletedAt = GETDATE()
+                WHERE Id = {user.Id}");
 
     public async Task CreateUserTokenAsync(UserToken userToken)
         => await _context.UserTokens.AddAsync(userToken);

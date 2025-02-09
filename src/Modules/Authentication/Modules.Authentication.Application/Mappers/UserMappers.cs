@@ -1,5 +1,5 @@
 ﻿using Modules.Authentication.Application.Commands.Register;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Application.Mappers;
 

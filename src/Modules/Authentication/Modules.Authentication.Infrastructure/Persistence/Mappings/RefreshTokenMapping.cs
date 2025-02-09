@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Mappings;
 
@@ -11,7 +11,6 @@ public sealed class RefreshTokenMapping : IEntityTypeConfiguration<RefreshToken>
         builder.ToTable("RefreshTokens");
 
         builder.HasKey(rt => rt.Id);
-        builder.Property(rt => rt.CreatedAt).IsRequired();
 
         builder.Property(rt => rt.UserEmail)
             .IsRequired().HasColumnType("VARCHAR")

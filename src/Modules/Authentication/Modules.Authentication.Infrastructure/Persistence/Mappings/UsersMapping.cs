@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Mappings;
 
@@ -12,6 +12,8 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
         builder.Property(u => u.CreatedAt).IsRequired();
+        builder.Property(u => u.DeletedAt).IsRequired(false);
+        builder.Property(rt => rt.IsDeleted).IsRequired();
 
         builder.Property(u => u.FirstName)
             .IsRequired().HasColumnType("VARCHAR")
@@ -68,10 +70,5 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.TwoFactorEnabled)
             .IsRequired();
-
-        builder.Property(u => u.IsActive)
-            .IsRequired();
-
-        builder.HasQueryFilter(x => x.IsActive == true);
     }
 }

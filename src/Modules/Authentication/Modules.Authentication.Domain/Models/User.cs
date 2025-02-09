@@ -1,7 +1,7 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
 using Modules.Authentication.Domain.ValueObjects;
 
-namespace Modules.Authentication.Domain.Entities;
+namespace Modules.Authentication.Domain.Models;
 
 public class User : Entity, IAggregateRoot
 {
@@ -18,7 +18,6 @@ public class User : Entity, IAggregateRoot
         EmailConfirmed = false;
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
-        IsActive = true;
     }
 
     protected User() { }
@@ -32,7 +31,6 @@ public class User : Entity, IAggregateRoot
     public DateTime? LockoutEnd { get; private set; }
     public string PasswordHash { get; private set; } = string.Empty;
     public int AccessFailedCount { get; private set; }
-    public bool IsActive { get; private set; }
     public bool IsLockedOut { get; private set; }
     public bool EmailConfirmed { get; private set; }
     public bool PhoneConfirmed { get; private set; }
@@ -81,8 +79,6 @@ public class User : Entity, IAggregateRoot
     public void RegisterLogin() => LastLogin = DateTime.Now;
 
     public static UserRole AddRole(Guid userId, long roleId) => new(roleId, userId);
-    public void DesactivateAccount() => IsActive = false;
-
     public void UpdatePassword(string password) => PasswordHash = password;
 }
 

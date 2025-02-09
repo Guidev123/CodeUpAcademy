@@ -1,13 +1,13 @@
 ﻿using CodeUp.SharedKernel.DomainObjects;
 using Microsoft.EntityFrameworkCore;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Infrastructure.Persistence;
 
 public sealed class AuthenticationDbContext(DbContextOptions<AuthenticationDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
-	public DbSet<Role> Roles { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<UserRole> UserRoles { get; set; }
     public DbSet<UserToken> UserTokens { get; set; }
     public DbSet<RefreshToken> RefreshTokens { get; set; }

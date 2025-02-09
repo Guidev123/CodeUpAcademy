@@ -1,6 +1,6 @@
 ﻿using CodeUp.Common.Responses;
 using Modules.Authentication.Application.DTOs;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Application.Services;
 

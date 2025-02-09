@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Services;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 using Modules.Authentication.Domain.Repositories;
 using Modules.Authentication.Infrastructure.Persistence;
 using System.IdentityModel.Tokens.Jwt;

@@ -1,6 +1,7 @@
 ﻿using CodeUp.Common.Abstractions;
 using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
+using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Delete;

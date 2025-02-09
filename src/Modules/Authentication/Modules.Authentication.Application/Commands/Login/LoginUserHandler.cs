@@ -3,7 +3,7 @@ using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
 using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Services;
-using Modules.Authentication.Domain.Entities;
+using Modules.Authentication.Domain.Models;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Login;

@@ -12,7 +12,7 @@ using Modules.Authentication.Infrastructure.Persistence;
 namespace Modules.Authentication.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20250208203509_Initial")]
+    [Migration("20250209024924_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -26,14 +26,11 @@ namespace Modules.Authentication.Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.RefreshToken", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.RefreshToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -52,7 +49,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.ToTable("RefreshTokens", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.Role", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.Role", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +80,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -98,6 +95,9 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
@@ -107,7 +107,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                         .IsUnicode(false)
                         .HasColumnType("VARCHAR");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("IsLockedOut")
@@ -141,7 +141,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.ToTable("Users", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.UserRole", b =>
                 {
                     b.Property<long>("RoleId")
                         .HasColumnType("bigint");
@@ -156,14 +156,11 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.ToTable("UserRoles", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserToken", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.UserToken", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2");
@@ -186,7 +183,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.ToTable("UserTokens", "authentication");
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.User", b =>
                 {
                     b.OwnsOne("Modules.Authentication.Domain.ValueObjects.Email", "Email", b1 =>
                         {
@@ -233,15 +230,15 @@ namespace Modules.Authentication.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserRole", b =>
+            modelBuilder.Entity("Modules.Authentication.Domain.Models.UserRole", b =>
                 {
-                    b.HasOne("Modules.Authentication.Domain.Entities.Role", "Role")
+                    b.HasOne("Modules.Authentication.Domain.Models.Role", "Role")
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Modules.Authentication.Domain.Entities.User", "User")
+                    b.HasOne("Modules.Authentication.Domain.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

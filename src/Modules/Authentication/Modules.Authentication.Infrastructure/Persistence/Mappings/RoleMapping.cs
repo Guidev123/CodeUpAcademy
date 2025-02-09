@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Modules.Authentication.Domain.Entities;
 using Modules.Authentication.Domain.Enums;
+using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Mappings;
 

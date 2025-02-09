@@ -6,8 +6,8 @@ using CodeUp.MessageBus;
 using Modules.Authentication.Application.DTOs;
 using Modules.Authentication.Application.Mappers;
 using Modules.Authentication.Application.Services;
-using Modules.Authentication.Domain.Entities;
 using Modules.Authentication.Domain.Enums;
+using Modules.Authentication.Domain.Models;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Register;

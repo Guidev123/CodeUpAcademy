@@ -1,4 +1,4 @@
-﻿namespace Modules.Authentication.Domain.Entities;
+﻿namespace Modules.Authentication.Domain.Models;
 
 public class Role
 {

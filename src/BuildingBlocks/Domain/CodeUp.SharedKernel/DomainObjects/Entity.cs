@@ -6,10 +6,18 @@ public abstract class Entity
     {
         Id = Guid.NewGuid();
         CreatedAt = DateTime.Now;
+        IsDeleted = false;
     }
 
     public Guid Id { get; }
     public DateTime CreatedAt { get; }
+    public bool IsDeleted { get; private set; }
+    public DateTime? DeletedAt { get; private set; }
+    public void SetAsDeleted()
+    {
+        DeletedAt = DateTime.Now;   
+        IsDeleted = true;
+    }
 
     private readonly List<Event> _events = [];
     public IReadOnlyCollection<Event> Events => _events.AsReadOnly();
