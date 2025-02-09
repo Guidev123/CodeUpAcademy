@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Modules.Authentication.Infrastructure.Persistence.Migrations
+namespace Modules.Authentication.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -74,6 +74,23 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "UserTokens",
+                schema: "authentication",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserEmail = table.Column<string>(type: "VARCHAR(160)", unicode: false, nullable: false),
+                    Token = table.Column<string>(type: "VARCHAR(160)", unicode: false, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserTokens", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "UserRoles",
                 schema: "authentication",
                 columns: table => new
@@ -126,6 +143,10 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 
             migrationBuilder.DropTable(
                 name: "UserRoles",
+                schema: "authentication");
+
+            migrationBuilder.DropTable(
+                name: "UserTokens",
                 schema: "authentication");
 
             migrationBuilder.DropTable(

@@ -71,5 +71,7 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.IsActive)
             .IsRequired();
+
+        builder.HasQueryFilter(x => x.IsActive == true);
     }
 }

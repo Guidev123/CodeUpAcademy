@@ -26,8 +26,9 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
     public async Task<ICollection<string>> GetUserRolesAsync(Guid userId)
         => await _context.UserRoles.AsNoTracking().Where(x => x.UserId == userId).Select(x => x.Role.Name).ToListAsync();
 
-    public void Delete(User user)
-        => _context.Users.Remove(user);
+    public async Task DeleteAsync(User user)
+        => await _context.Database.ExecuteSqlInterpolatedAsync(
+            $"UPDATE authentication.Users SET IsActive = 0 WHERE Id = {user.Id}");
 
     public async Task CreateUserTokenAsync(UserToken userToken)
         => await _context.UserTokens.AddAsync(userToken);

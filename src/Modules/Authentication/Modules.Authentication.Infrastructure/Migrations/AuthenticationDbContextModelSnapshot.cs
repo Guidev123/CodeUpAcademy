@@ -3,20 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Modules.Authentication.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Modules.Authentication.Infrastructure.Persistence.Migrations
+namespace Modules.Authentication.Infrastructure.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
-    [Migration("20250207182708_Init")]
-    partial class Init
+    partial class AuthenticationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,6 +151,36 @@ namespace Modules.Authentication.Infrastructure.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("UserRoles", "authentication");
+                });
+
+            modelBuilder.Entity("Modules.Authentication.Domain.Entities.UserToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("VARCHAR(160)");
+
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .IsUnicode(false)
+                        .HasColumnType("VARCHAR(160)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("UserTokens", "authentication");
                 });
 
             modelBuilder.Entity("Modules.Authentication.Domain.Entities.User", b =>

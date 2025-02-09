@@ -82,5 +82,7 @@ public class User : Entity, IAggregateRoot
 
     public static UserRole AddRole(Guid userId, long roleId) => new(roleId, userId);
     public void DesactivateAccount() => IsActive = false;
+
+    public void UpdatePassword(string password) => PasswordHash = password;
 }
 
