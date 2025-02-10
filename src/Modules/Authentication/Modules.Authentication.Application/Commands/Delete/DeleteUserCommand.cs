@@ -2,4 +2,4 @@
 
 namespace Modules.Authentication.Application.Commands.Delete;
 
-public record DeleteUserCommand(Guid UserId) : CommandBase<DeleteUserResponse>;
+public record DeleteUserCommand(Guid UserId) : Command<DeleteUserResponse>;

@@ -16,6 +16,7 @@ public static class InfrastructureModule
         services.AddRepositories();
         services.AddTokenService();
         services.AddPasswordHasherService();
+        services.AddUserService();
         services.AddDbContext(configuration);
     }
 
@@ -27,6 +28,9 @@ public static class InfrastructureModule
 
     public static void AddTokenService(this IServiceCollection services) =>
         services.AddTransient<ITokenService, TokenService>();
+
+    public static void AddUserService(this IServiceCollection services)
+        => services.AddTransient<IUserService, UserService>();  
 
     public static void AddPasswordHasherService(this IServiceCollection services)
         => services.AddTransient<IHasherService, PasswordHashService>();

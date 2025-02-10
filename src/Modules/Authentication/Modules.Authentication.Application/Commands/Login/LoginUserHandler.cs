@@ -13,7 +13,7 @@ public sealed class LoginUserHandler(INotificator notificator,
                                      ITokenService tokenService,
                                      IHasherService hasherService,
                                      IUnitOfWork uow)
-                                   : CommandHandlerBase<LoginUserCommand, LoginResponseDTO>(notificator)
+                                   : CommandHandler<LoginUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;

@@ -9,4 +9,4 @@ public record RegisterUserCommand(
     string Document, string ProfilePicture,
     DateTime BirthDate, string Password,
     string ConfirmPassword
-    ): CommandBase<LoginResponseDTO>;
+    ): Command<LoginResponseDTO>;

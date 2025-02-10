@@ -2,4 +2,4 @@
 
 namespace Modules.Authentication.Application.Commands.ForgotPassword;
 
-public record ForgotPasswordCommand(string Email, string ClientUrlResetPassword) : CommandBase<ForgotPasswordResponse>;
+public record ForgotPasswordCommand(string Email, string ClientUrlResetPassword) : Command<ForgotPasswordResponse>;

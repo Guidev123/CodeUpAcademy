@@ -2,4 +2,4 @@
 using Modules.Authentication.Application.DTOs;
 
 namespace Modules.Authentication.Application.Commands.Login;
-public record LoginUserCommand(string Email, string Password) : CommandBase<LoginResponseDTO>;
+public record LoginUserCommand(string Email, string Password) : Command<LoginResponseDTO>;

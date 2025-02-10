@@ -10,7 +10,7 @@ public sealed class ResetPasswordHandler(INotificator notificator,
                                          IUserRepository userRepository,
                                          IHasherService hasherService,
                                          IUnitOfWork uow)
-                                       : CommandHandlerBase<ResetPasswordCommand,
+                                       : CommandHandler<ResetPasswordCommand,
                                          ResetPasswordResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
@@ -56,6 +56,7 @@ public sealed class ResetPasswordHandler(INotificator notificator,
             return false;
         }
 
+        _userRepository.DeleteUserToken(userToken);
         return true;
     }
 }

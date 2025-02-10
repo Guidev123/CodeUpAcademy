@@ -18,7 +18,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
                     IUnitOfWork uow,
                     INotificator notificator,
                     IMessageBus bus)
-                  : CommandHandlerBase<RegisterUserCommand, LoginResponseDTO>(notificator)
+                  : CommandHandler<RegisterUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;

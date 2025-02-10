@@ -14,7 +14,7 @@ public sealed class ForgotPasswordHandler(INotificator notificator,
                                           IEmailService emailService,
                                           IHasherService hasherService,
                                           IUnitOfWork uow)
-                                        : CommandHandlerBase<ForgotPasswordCommand,
+                                        : CommandHandler<ForgotPasswordCommand,
                                           ForgotPasswordResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;

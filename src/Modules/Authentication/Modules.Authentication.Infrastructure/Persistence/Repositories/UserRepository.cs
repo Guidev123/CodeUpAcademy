@@ -38,6 +38,8 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 
     public async Task<UserToken?> GetTokenByUserIdAsync(Guid userId)
         => await _context.UserTokens.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == userId);
+    public void DeleteUserToken(UserToken userToken)
+        => _context.UserTokens.Remove(userToken);
 
     public void Dispose()
     {

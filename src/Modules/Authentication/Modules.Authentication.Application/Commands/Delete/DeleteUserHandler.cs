@@ -8,7 +8,7 @@ namespace Modules.Authentication.Application.Commands.Delete;
 
 public sealed class DeleteUserHandler(INotificator notificator,
                                       IUserRepository userRepository) 
-                                    : CommandHandlerBase<DeleteUserCommand, DeleteUserResponse>(notificator)
+                                    : CommandHandler<DeleteUserCommand, DeleteUserResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     public override async Task<Response<DeleteUserResponse>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
