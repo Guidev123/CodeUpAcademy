@@ -5,6 +5,7 @@ namespace Modules.Students.Domain.Repositories;
 public interface IStudentRepository : IDisposable
 {
     Task CreateAsync(Student student);
+    Task<Student?> GetByIdAsync(Guid id);
     Task<bool> AlreadyExistsAsync(string document);
     void Update(Student student);
     Task DeleteAsync(Guid id);  

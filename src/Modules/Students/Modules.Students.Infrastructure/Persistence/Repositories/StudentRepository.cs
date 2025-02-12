@@ -8,6 +8,9 @@ public sealed class StudentRepository(StudentDbContext context) : IStudentReposi
 {
     private readonly StudentDbContext _context = context;
 
+    public async Task<Student?> GetByIdAsync(Guid id)
+        => await _context.Students.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+
     public async Task CreateAsync(Student student)
         => await _context.Students.AddAsync(student);
 

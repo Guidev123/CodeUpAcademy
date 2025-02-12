@@ -6,6 +6,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Modules.Students.Application.Commands.Create;
+using Modules.Students.Application.Commands.Delete;
 
 namespace Modules.Students.Infrastructure.BackgroundServices;
 
@@ -22,13 +23,14 @@ public class StudentBackgroundService(IServiceProvider serviceProvider, IMessage
 
     private void SetResponse()
     {
-        _bus.RespondAsync<RegisteredUserIntegrationEvent, IntegrationEventResponseMessage>(RegisterStudent);
+        _bus.RespondAsync<RegisteredUserIntegrationEvent, IntegrationEventResponseMessage>(RegisterStudentAsync);
+        _bus.SubscribeAsync<UserDeletedIntegrationEvent>("UserDeletedIntegrationEvent", DeleteStudentAsync);
         _bus.AdvancedBus.Connected += OnConnect!;
     }
 
     private void OnConnect(object s, EventArgs e) => SetResponse();
 
-    private async Task<IntegrationEventResponseMessage> RegisterStudent(RegisteredUserIntegrationEvent message)
+    private async Task<IntegrationEventResponseMessage> RegisterStudentAsync(RegisteredUserIntegrationEvent message)
     {
         Response<CreateStudentResponse> response;
 
@@ -40,6 +42,22 @@ public class StudentBackgroundService(IServiceProvider serviceProvider, IMessage
                                                    message.LastName, message.Email, message.Phone,
                                                    message.Document, message.BirthDate,
                                                    message.ProfilePicture, message.Type);
+
+            response = await mediator.Send(command);
+        }
+
+        return response.IsSuccess ? new IntegrationEventResponseMessage(true) : new IntegrationEventResponseMessage(false, [.. response.Errors!]);
+    }
+
+    private async Task<IntegrationEventResponseMessage> DeleteStudentAsync(UserDeletedIntegrationEvent message)
+    {
+        Response<DeleteStudentResponse> response;
+
+        using (var scope = _serviceProvider.CreateScope())
+        {
+            var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
+
+            var command = new DeleteStudentCommand(message.UserId);
 
             response = await mediator.Send(command);
         }

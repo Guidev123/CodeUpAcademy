@@ -1,16 +1,20 @@
 ﻿using CodeUp.Common.Abstractions;
 using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
-using Modules.Authentication.Application.DTOs;
+using CodeUp.IntegrationEvents.Authentication;
+using CodeUp.MessageBus;
 using Modules.Authentication.Domain.Repositories;
 
 namespace Modules.Authentication.Application.Commands.Delete;
 
 public sealed class DeleteUserHandler(INotificator notificator,
-                                      IUserRepository userRepository) 
+                                      IUserRepository userRepository,
+                                      IMessageBus bus) 
                                     : CommandHandler<DeleteUserCommand, DeleteUserResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
+    private readonly IMessageBus _bus = bus;
+
     public override async Task<Response<DeleteUserResponse>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId);
@@ -21,6 +25,8 @@ public sealed class DeleteUserHandler(INotificator notificator,
         }
 
         await _userRepository.DeleteAsync(user);
+
+        await _bus.PublishAsync<UserDeletedIntegrationEvent>(new(user.Id));
 
         return Response<DeleteUserResponse>.Success(null, 204);
     }
