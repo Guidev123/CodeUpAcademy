@@ -78,7 +78,8 @@ public class User : Entity, IAggregateRoot
 
     public void RegisterLogin() => LastLogin = DateTime.Now;
 
-    public static UserRole AddRole(Guid userId, long roleId) => new(roleId, userId);
+    public static UserRole AddRole(Guid userId, Guid roleId) => new(roleId, userId);
+
     public void UpdatePassword(string password) => PasswordHash = password;
 }
 

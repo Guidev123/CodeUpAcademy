@@ -20,6 +20,25 @@ public static class ApiConfig
         builder.AddMessageBusConfiguration();
     }
 
+    public static void AddCorsConfig(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("Total", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
+    }
+
+    public static void AddSecurity(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthentication();
+        builder.Services.AddAuthorization();
+    }
+
     public static void AddHandlers(this WebApplicationBuilder builder)
     {
         var assemblyFiles = Directory.GetFiles(AppDomain.CurrentDomain.BaseDirectory, "Modules.*.dll");
@@ -48,4 +67,18 @@ public static class ApiConfig
 
     public static void AddMessageBusConfiguration(this WebApplicationBuilder builder) =>
         builder.Services.AddMessageBus(builder.Configuration.GetMessageQueueConnection("MessageBus"));
+
+    public static void UseSecurity(this IApplicationBuilder app)
+    {
+        app.UseSwaggerConfig();
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseCors("Total");
+
+        app.UseAuthentication();
+        app.UseAuthorization();
+    }
 }

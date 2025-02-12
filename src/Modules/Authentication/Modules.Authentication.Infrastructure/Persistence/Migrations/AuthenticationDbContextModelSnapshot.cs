@@ -8,7 +8,7 @@ using Modules.Authentication.Infrastructure.Persistence;
 
 #nullable disable
 
-namespace Modules.Authentication.Infrastructure.Migrations
+namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AuthenticationDbContext))]
     partial class AuthenticationDbContextModelSnapshot : ModelSnapshot
@@ -48,11 +48,15 @@ namespace Modules.Authentication.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Authentication.Domain.Models.Role", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -63,18 +67,6 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", "authentication");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Free"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Premium"
-                        });
                 });
 
             modelBuilder.Entity("Modules.Authentication.Domain.Models.User", b =>
@@ -140,8 +132,8 @@ namespace Modules.Authentication.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Authentication.Domain.Models.UserRole", b =>
                 {
-                    b.Property<long>("RoleId")
-                        .HasColumnType("bigint");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
@@ -159,8 +151,17 @@ namespace Modules.Authentication.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("ExpiresAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Token")
                         .IsRequired()
@@ -182,7 +183,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
 
             modelBuilder.Entity("Modules.Authentication.Domain.Models.User", b =>
                 {
-                    b.OwnsOne("Modules.Authentication.Domain.ValueObjects.Email", "Email", b1 =>
+                    b.OwnsOne("CodeUp.SharedKernel.ValueObjects.Email", "Email", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
@@ -201,7 +202,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("Modules.Authentication.Domain.ValueObjects.Phone", "Phone", b1 =>
+                    b.OwnsOne("CodeUp.SharedKernel.ValueObjects.Phone", "Phone", b1 =>
                         {
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");

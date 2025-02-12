@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
-using Modules.Authentication.Domain.Enums;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Modules.Authentication.Domain.Models;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Mappings;
@@ -16,8 +15,5 @@ public sealed class RoleMapping : IEntityTypeConfiguration<Role>
         builder.Property(r => r.Name)
             .IsRequired().HasColumnType("VARCHAR")
             .HasMaxLength(50);
-
-        builder.HasData(new Role(nameof(SubscriptionTypeEnum.Free), (long)SubscriptionTypeEnum.Free),
-                        new Role(nameof(SubscriptionTypeEnum.Premium), (long)SubscriptionTypeEnum.Premium));
     }
 }

@@ -8,6 +8,9 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 {
     private readonly AuthenticationDbContext _context = context;
 
+    public async Task<Role?> GetRoleByNameAsync(string roleName) 
+        => await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Name == roleName);
+
     public async Task<User?> GetByIdAsync(Guid id) 
         => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 

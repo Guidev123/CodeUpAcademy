@@ -42,6 +42,13 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         var user = request.MapToEntity(_hasherService.HashPassword(request.Password));
         await _userRepository.CreateAsync(user);
 
+        var role = await _userRepository.GetRoleByNameAsync(nameof(SubscriptionTypeEnum.Free));
+        if (role is null)
+        {
+            Notify("Was not possible create user");
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
+        }
+
         var student = await RegisterStudentAsync(request, user);
         if (!student.IsValid)
         {
@@ -49,9 +56,9 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
         }
 
-        var role = User.AddRole(user.Id, (long)SubscriptionTypeEnum.Free);
+        var userRole = User.AddRole(user.Id, role.Id);
 
-        await _userRepository.CreateUserRoleAsync(role);
+        await _userRepository.CreateUserRoleAsync(userRole);
 
         if (!await _uow.SaveChangesAsync())
         {

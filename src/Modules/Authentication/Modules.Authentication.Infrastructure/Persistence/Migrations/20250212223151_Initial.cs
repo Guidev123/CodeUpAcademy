@@ -3,9 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
-
-namespace Modules.Authentication.Infrastructure.Migrations
+namespace Modules.Authentication.Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -36,9 +34,10 @@ namespace Modules.Authentication.Infrastructure.Migrations
                 schema: "authentication",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "VARCHAR(50)", unicode: false, maxLength: 50, nullable: false)
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "VARCHAR(50)", unicode: false, maxLength: 50, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -82,7 +81,10 @@ namespace Modules.Authentication.Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpiresAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserEmail = table.Column<string>(type: "VARCHAR(160)", unicode: false, nullable: false),
-                    Token = table.Column<string>(type: "VARCHAR(160)", unicode: false, nullable: false)
+                    Token = table.Column<string>(type: "VARCHAR(160)", unicode: false, nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,7 +96,7 @@ namespace Modules.Authentication.Infrastructure.Migrations
                 schema: "authentication",
                 columns: table => new
                 {
-                    RoleId = table.Column<long>(type: "bigint", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
@@ -114,16 +116,6 @@ namespace Modules.Authentication.Infrastructure.Migrations
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                schema: "authentication",
-                table: "Roles",
-                columns: new[] { "Id", "Name" },
-                values: new object[,]
-                {
-                    { 1L, "Free" },
-                    { 2L, "Premium" }
                 });
 
             migrationBuilder.CreateIndex(

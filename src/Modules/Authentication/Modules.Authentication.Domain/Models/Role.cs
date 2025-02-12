@@ -1,14 +1,11 @@
-﻿namespace Modules.Authentication.Domain.Models;
+﻿using CodeUp.SharedKernel.DomainObjects;
 
-public class Role
+namespace Modules.Authentication.Domain.Models;
+
+public class Role : Entity
 {
-    public Role(string name, long id)
-    {
-        Name = name;
-        Id = id;
-    }
+    public Role(string name) => Name = name;
 
-    public long Id { get; private set; }
     public string Name { get; private set; } = string.Empty;
 }
 

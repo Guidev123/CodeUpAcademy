@@ -11,6 +11,7 @@ public interface IUserRepository : IDisposable
     Task<User?> GetByEmailAsync(string email);
     Task<UserToken?> GetTokenByUserIdAsync(Guid userId);
     Task<ICollection<string>> GetUserRolesAsync(Guid userId);
+    Task<Role?> GetRoleByNameAsync(string roleName);
     void Update(User user);
     Task DeleteAsync(User user);
     void DeleteUserToken(UserToken userToken);
