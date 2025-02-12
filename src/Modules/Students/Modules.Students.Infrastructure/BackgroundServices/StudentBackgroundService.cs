@@ -8,7 +8,7 @@ using Modules.Students.Application.Commands.Create;
 
 namespace Modules.Students.Infrastructure.BackgroundServices;
 
-public class UserCreatedConsumer(IServiceProvider serviceProvider, IMessageBus bus) : BackgroundService
+public class StudentBackgroundService(IServiceProvider serviceProvider, IMessageBus bus) : BackgroundService
 {
     private readonly IMessageBus _bus = bus;
     private readonly IServiceProvider _serviceProvider = serviceProvider;

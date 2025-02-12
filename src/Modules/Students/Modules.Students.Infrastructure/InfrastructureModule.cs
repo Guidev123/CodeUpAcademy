@@ -18,7 +18,7 @@ public static class InfrastructureModule
     }
 
     public static void AddBackgroundServices(this IServiceCollection services)
-        => services.AddHostedService<UserCreatedConsumer>();
+        => services.AddHostedService<StudentBackgroundService>();
 
     public static void AddRepositories(this IServiceCollection services)
         => services.AddScoped<IStudentRepository, StudentRepository>();

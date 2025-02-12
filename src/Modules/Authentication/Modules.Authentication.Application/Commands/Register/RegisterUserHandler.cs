@@ -70,13 +70,11 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
     {
         try
         {
-            var result = await _bus.RequestAsync<RegisteredUserIntegrationEvent, bool>(new RegisteredUserIntegrationEvent
+            return await _bus.RequestAsync<RegisteredUserIntegrationEvent, bool>(new RegisteredUserIntegrationEvent
                 (user.Id, user.FirstName, user.LastName,
                  user.Email.Address, user.Phone.Number,
                  request.Document, request.ProfilePicture,
                  user.BirthDate, (int)SubscriptionTypeEnum.Free));
-
-            return result;
         }
         catch
         {
