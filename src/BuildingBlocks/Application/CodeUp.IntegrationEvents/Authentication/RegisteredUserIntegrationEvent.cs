@@ -1,8 +1,8 @@
 ﻿namespace CodeUp.IntegrationEvents.Authentication;
 
-public class RegisteredStudentIntegrationEvent : IntegrationEvent
+public class RegisteredUserIntegrationEvent : IntegrationEvent
 {
-    public RegisteredStudentIntegrationEvent(Guid id, string firstName, string lastName, string email, string phone, string document, string profilePicture, DateTime birthDate)
+    public RegisteredUserIntegrationEvent(Guid id, string firstName, string lastName, string email, string phone, string document, string profilePicture, DateTime birthDate, int type)
     {
         Id = id;
         FirstName = firstName;
@@ -12,6 +12,7 @@ public class RegisteredStudentIntegrationEvent : IntegrationEvent
         Document = document;
         ProfilePicture = profilePicture;
         BirthDate = birthDate;
+        Type = type;
     }
     public Guid Id { get; private set; }
     public string FirstName { get; private set; } = string.Empty;
@@ -20,5 +21,6 @@ public class RegisteredStudentIntegrationEvent : IntegrationEvent
     public string Phone { get; private set; } = string.Empty;
     public string Document { get; private set; } = string.Empty;
     public string ProfilePicture { get; private set; } = string.Empty;
+    public int Type { get; private set; }
     public DateTime BirthDate { get; private set; }
 }

@@ -66,21 +66,21 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         return Response<LoginResponseDTO>.Success(token.Data, 201);
     }
 
-    private async Task<Response<RegisteredStudentIntegrationEvent>> RegisterStudentAsync(RegisterUserCommand request, User user)
+    private async Task<Response<RegisteredUserIntegrationEvent>> RegisterStudentAsync(RegisterUserCommand request, User user)
     {
         try
         {
-            return await _bus.RequestAsync<RegisteredStudentIntegrationEvent,
-                Response<RegisteredStudentIntegrationEvent>>(new RegisteredStudentIntegrationEvent
+            return await _bus.RequestAsync<RegisteredUserIntegrationEvent,
+                Response<RegisteredUserIntegrationEvent>>(new RegisteredUserIntegrationEvent
                 (user.Id, user.FirstName, user.LastName,
                  user.Email.Address, user.Phone.Number,
                  request.Document, request.ProfilePicture,
-                 user.BirthDate));
+                 user.BirthDate, (int)SubscriptionTypeEnum.Free));
         }
         catch
         {
             Notify($"Something has failed during your register.");
-            return Response<RegisteredStudentIntegrationEvent>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<RegisteredUserIntegrationEvent>.Failure(GetNotifications(), "Invalid Operation");
         }
     }
 

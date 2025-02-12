@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.Common\CodeUp.Common.csproj" />
+    <ProjectReference Include="..\Modules.Students.Domain\Modules.Students.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
