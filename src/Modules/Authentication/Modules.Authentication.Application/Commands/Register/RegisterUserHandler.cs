@@ -1,6 +1,7 @@
 ﻿using CodeUp.Common.Abstractions;
 using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
+using CodeUp.IntegrationEvents;
 using CodeUp.IntegrationEvents.Authentication;
 using CodeUp.MessageBus;
 using Modules.Authentication.Application.DTOs;
@@ -42,8 +43,11 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         await _userRepository.CreateAsync(user);
 
         var student = await RegisterStudentAsync(request, user);
-        if (!student)
+        if (!student.IsValid)
+        {
+            student.Errors!.ToList().ForEach(Notify);
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+        }
 
         var role = User.AddRole(user.Id, (long)SubscriptionTypeEnum.Free);
 
@@ -66,11 +70,11 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         return Response<LoginResponseDTO>.Success(token.Data, 201);
     }
 
-    private async Task<bool> RegisterStudentAsync(RegisterUserCommand request, User user)
+    private async Task<IntegrationEventResponseMessage> RegisterStudentAsync(RegisterUserCommand request, User user)
     {
         try
         {
-            return await _bus.RequestAsync<RegisteredUserIntegrationEvent, bool>(new RegisteredUserIntegrationEvent
+            return await _bus.RequestAsync<RegisteredUserIntegrationEvent, IntegrationEventResponseMessage>(new RegisteredUserIntegrationEvent
                 (user.Id, user.FirstName, user.LastName,
                  user.Email.Address, user.Phone.Number,
                  request.Document, request.ProfilePicture,
@@ -79,7 +83,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         catch
         {
             Notify($"Something has failed during your register.");
-            return false;
+            return new(false);
         }
     }
 

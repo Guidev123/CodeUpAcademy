@@ -1,4 +1,5 @@
 ﻿using CodeUp.Common.Responses;
+using CodeUp.IntegrationEvents;
 using CodeUp.IntegrationEvents.Authentication;
 using CodeUp.MessageBus;
 using MediatR;
@@ -21,13 +22,13 @@ public class StudentBackgroundService(IServiceProvider serviceProvider, IMessage
 
     private void SetResponse()
     {
-        _bus.RespondAsync<RegisteredUserIntegrationEvent, bool>(RegisterStudent);
+        _bus.RespondAsync<RegisteredUserIntegrationEvent, IntegrationEventResponseMessage>(RegisterStudent);
         _bus.AdvancedBus.Connected += OnConnect!;
     }
 
     private void OnConnect(object s, EventArgs e) => SetResponse();
 
-    private async Task<bool> RegisterStudent(RegisteredUserIntegrationEvent message)
+    private async Task<IntegrationEventResponseMessage> RegisterStudent(RegisteredUserIntegrationEvent message)
     {
         Response<CreateStudentResponse> response;
 
@@ -43,6 +44,6 @@ public class StudentBackgroundService(IServiceProvider serviceProvider, IMessage
             response = await mediator.Send(command);
         }
 
-        return response.IsSuccess;
+        return response.IsSuccess ? new IntegrationEventResponseMessage(true) : new IntegrationEventResponseMessage(false, [.. response.Errors!]);
     }
 }
