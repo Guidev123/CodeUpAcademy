@@ -12,7 +12,7 @@ public sealed class StudentMapping : IEntityTypeConfiguration<Student>
 
         builder.HasKey(a => a.Id);
         builder.Property(a => a.IsDeleted).IsRequired();
-        builder.Property(a => a.DeletedAt).IsRequired();
+        builder.Property(a => a.DeletedAt).IsRequired(false);
         builder.Property(a => a.CreatedAt).IsRequired();
 
         builder.OwnsOne(x => x.Email, opt =>
@@ -33,5 +33,7 @@ public sealed class StudentMapping : IEntityTypeConfiguration<Student>
         builder.Property(x => x.ProfilePicture).HasColumnType("VARCHAR(255)");
 
         builder.HasOne(x => x.Address).WithOne(x => x.Student).HasForeignKey<Address>(x => x.StudentId);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

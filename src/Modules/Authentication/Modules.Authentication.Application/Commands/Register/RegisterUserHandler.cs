@@ -39,14 +39,14 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
 
         var user = request.MapToEntity(_hasherService.HashPassword(request.Password));
+        await _userRepository.CreateAsync(user);
 
         var student = await RegisterStudentAsync(request, user);
-        if (!student.IsSuccess)
+        if (!student)
             return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
 
         var role = User.AddRole(user.Id, (long)SubscriptionTypeEnum.Free);
 
-        await _userRepository.CreateAsync(user);
         await _userRepository.CreateUserRoleAsync(role);
 
         if (!await _uow.SaveChangesAsync())
@@ -66,21 +66,22 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         return Response<LoginResponseDTO>.Success(token.Data, 201);
     }
 
-    private async Task<Response<RegisteredUserIntegrationEvent>> RegisterStudentAsync(RegisterUserCommand request, User user)
+    private async Task<bool> RegisterStudentAsync(RegisterUserCommand request, User user)
     {
         try
         {
-            return await _bus.RequestAsync<RegisteredUserIntegrationEvent,
-                Response<RegisteredUserIntegrationEvent>>(new RegisteredUserIntegrationEvent
+            var result = await _bus.RequestAsync<RegisteredUserIntegrationEvent, bool>(new RegisteredUserIntegrationEvent
                 (user.Id, user.FirstName, user.LastName,
                  user.Email.Address, user.Phone.Number,
                  request.Document, request.ProfilePicture,
                  user.BirthDate, (int)SubscriptionTypeEnum.Free));
+
+            return result;
         }
         catch
         {
             Notify($"Something has failed during your register.");
-            return Response<RegisteredUserIntegrationEvent>.Failure(GetNotifications(), "Invalid Operation");
+            return false;
         }
     }
 

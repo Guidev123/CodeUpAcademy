@@ -21,13 +21,13 @@ public class UserCreatedConsumer(IServiceProvider serviceProvider, IMessageBus b
 
     private void SetResponse()
     {
-        _bus.RespondAsync<RegisteredUserIntegrationEvent, Response<RegisteredUserIntegrationEvent>>(RegisterStudent);
+        _bus.RespondAsync<RegisteredUserIntegrationEvent, bool>(RegisterStudent);
         _bus.AdvancedBus.Connected += OnConnect!;
     }
 
     private void OnConnect(object s, EventArgs e) => SetResponse();
 
-    private async Task<Response<RegisteredUserIntegrationEvent>> RegisterStudent(RegisteredUserIntegrationEvent message)
+    private async Task<bool> RegisterStudent(RegisteredUserIntegrationEvent message)
     {
         Response<CreateStudentResponse> response;
 
@@ -43,8 +43,6 @@ public class UserCreatedConsumer(IServiceProvider serviceProvider, IMessageBus b
             response = await mediator.Send(command);
         }
 
-        return !response.IsSuccess
-            ? Response<RegisteredUserIntegrationEvent>.Failure(response.Errors!)
-            : Response<RegisteredUserIntegrationEvent>.Success(null, 201);
+        return response.IsSuccess;
     }
 }

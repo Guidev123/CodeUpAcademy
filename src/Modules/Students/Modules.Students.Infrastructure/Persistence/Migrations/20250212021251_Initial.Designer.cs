@@ -12,7 +12,7 @@ using Modules.Students.Infrastructure.Persistence;
 namespace Modules.Students.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(StudentDbContext))]
-    [Migration("20250212014915_Initial")]
+    [Migration("20250212021251_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -43,7 +43,7 @@ namespace Modules.Students.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsDeleted")
@@ -92,7 +92,7 @@ namespace Modules.Students.Infrastructure.Persistence.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("DeletedAt")
+                    b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")

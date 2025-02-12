@@ -13,7 +13,7 @@ public sealed class AddressMapping : IEntityTypeConfiguration<Address>
 
         builder.HasKey(a => a.Id);
         builder.Property(a => a.IsDeleted).IsRequired();
-        builder.Property(a => a.DeletedAt).IsRequired();
+        builder.Property(a => a.DeletedAt).IsRequired(false);
         builder.Property(a => a.CreatedAt).IsRequired();
 
         builder.Property(a => a.Street)
@@ -42,5 +42,7 @@ public sealed class AddressMapping : IEntityTypeConfiguration<Address>
         builder.Property(a => a.State)
             .IsRequired()
             .HasColumnType("varchar(50)");
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }
