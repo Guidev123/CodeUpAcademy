@@ -362,3 +362,4 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /src/API/CodeUp.API/appsettings.json
+/docker-compose.dcproj

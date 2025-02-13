@@ -1,4 +1,5 @@
 ﻿using CodeUp.API.Endpoints.Authentication;
+using CodeUp.API.Endpoints.Students;
 
 namespace CodeUp.API.Endpoints;
 
@@ -16,6 +17,10 @@ public static class Endpoint
             .MapEndpoint<ResetPasswordEndpoint>()
             .MapEndpoint<LoginUserEndpoint>()
             .MapEndpoint<RegisterUserEndpoint>();
+
+        endpoints.MapGroup("api/v1/students")
+            .WithTags("Students")
+            .MapEndpoint<AddProfilePictureEndpoint>();
     }
 
     private static IEndpointRouteBuilder MapEndpoint<TEndpoint>(this IEndpointRouteBuilder app)

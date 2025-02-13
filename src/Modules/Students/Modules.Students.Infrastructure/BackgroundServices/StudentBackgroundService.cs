@@ -40,8 +40,7 @@ public class StudentBackgroundService(IServiceProvider serviceProvider, IMessage
 
             var command = new CreateStudentCommand(message.Id, message.FirstName,
                                                    message.LastName, message.Email, message.Phone,
-                                                   message.Document, message.BirthDate,
-                                                   message.ProfilePicture, message.Type);
+                                                   message.Document, message.BirthDate, message.Type);
 
             response = await mediator.Send(command);
         }

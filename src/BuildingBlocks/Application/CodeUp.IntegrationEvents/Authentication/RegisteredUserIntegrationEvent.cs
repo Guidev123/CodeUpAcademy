@@ -2,7 +2,7 @@
 
 public class RegisteredUserIntegrationEvent : IntegrationEvent
 {
-    public RegisteredUserIntegrationEvent(Guid id, string firstName, string lastName, string email, string phone, string document, string profilePicture, DateTime birthDate, int type)
+    public RegisteredUserIntegrationEvent(Guid id, string firstName, string lastName, string email, string phone, string document, DateTime birthDate, int type)
     {
         Id = id;
         FirstName = firstName;
@@ -10,7 +10,6 @@ public class RegisteredUserIntegrationEvent : IntegrationEvent
         Email = email;
         Phone = phone;
         Document = document;
-        ProfilePicture = profilePicture;
         BirthDate = birthDate;
         Type = type;
     }
@@ -20,7 +19,6 @@ public class RegisteredUserIntegrationEvent : IntegrationEvent
     public string Email { get; private set; } = string.Empty;
     public string Phone { get; private set; } = string.Empty;
     public string Document { get; private set; } = string.Empty;
-    public string ProfilePicture { get; private set; } = string.Empty;
     public int Type { get; private set; }
     public DateTime BirthDate { get; private set; }
 }

@@ -25,12 +25,6 @@ public sealed class CreateStudentValidation : AbstractValidator<CreateStudentCom
             .NotEmpty().WithMessage("The {PropertyName} field cannot be empty.")
             .Must(IsValidPhoneNumber).WithMessage("Invalid phone number format.");
 
-        RuleFor(x => x.ProfilePicture)
-            .NotEmpty()
-            .WithMessage("{PropertyName} is required")
-            .Must(x => x.Contains("http://") || x.Contains("https://"))
-            .WithMessage("{PropertyName} must be a valid URL");
-
         RuleFor(x => x.Document)
             .NotEmpty().WithMessage("The {PropertyName} field cannot be empty.")
             .Must(IsValidDocument).WithMessage("Invalid document numbers format.");

@@ -11,7 +11,7 @@ public class Response<TData>
 
     public Response() { }
 
-    protected Response(
+    public Response(
         TData? data,
         int? code = DEFAULT_SUCCESS_STATUS_CODE,
         string? message = null,

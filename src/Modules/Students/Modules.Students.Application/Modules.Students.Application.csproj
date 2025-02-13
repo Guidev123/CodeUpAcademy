@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.Common\CodeUp.Common.csproj" />
     <ProjectReference Include="..\Modules.Students.Domain\Modules.Students.Domain.csproj" />
   </ItemGroup>

@@ -14,12 +14,12 @@ using Modules.Authentication.Domain.Repositories;
 namespace Modules.Authentication.Application.Commands.Register;
 
 public sealed class RegisterUserHandler(IUserRepository userRepository,
-                    ITokenService tokenService,
-                    IHasherService hasherService,
-                    IUnitOfWork uow,
-                    INotificator notificator,
-                    IMessageBus bus)
-                  : CommandHandler<RegisterUserCommand, LoginResponseDTO>(notificator)
+                                        ITokenService tokenService,
+                                        IHasherService hasherService,
+                                        IUnitOfWork uow,
+                                        INotificator notificator,
+                                        IMessageBus bus)
+                                      : CommandHandler<RegisterUserCommand, LoginResponseDTO>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
     private readonly ITokenService _tokenService = tokenService;
@@ -84,8 +84,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
             return await _bus.RequestAsync<RegisteredUserIntegrationEvent, IntegrationEventResponseMessage>(new RegisteredUserIntegrationEvent
                 (user.Id, user.FirstName, user.LastName,
                  user.Email.Address, user.Phone.Number,
-                 request.Document, request.ProfilePicture,
-                 user.BirthDate, (int)SubscriptionTypeEnum.Free));
+                 request.Document, user.BirthDate, (int)SubscriptionTypeEnum.Free));
         }
         catch
         {
