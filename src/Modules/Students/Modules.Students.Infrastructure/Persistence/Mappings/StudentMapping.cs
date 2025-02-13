@@ -30,7 +30,7 @@ public sealed class StudentMapping : IEntityTypeConfiguration<Student>
             opt.Property(x => x.Number).HasColumnType("VARCHAR(40)").IsRequired().HasColumnName("Document");
         });
 
-        builder.Property(x => x.ProfilePicture).HasColumnType("VARCHAR(255)");
+        builder.Property(x => x.ProfilePicture).HasColumnType("VARCHAR(255)").IsRequired(false);
 
         builder.HasOne(x => x.Address).WithOne(x => x.Student).HasForeignKey<Address>(x => x.StudentId);
 
