@@ -1,7 +1,5 @@
-﻿using CodeUp.API.Endpoints.Helpers;
-using CodeUp.Common.Responses;
+﻿using CodeUp.Common.Responses;
 using MediatR;
-using Modules.Authentication.Application.Commands.ForgotPassword;
 using Modules.Authentication.Application.Commands.ResetPassword;
 
 namespace CodeUp.API.Endpoints.Authentication;
@@ -14,6 +12,6 @@ public sealed class ResetPasswordEndpoint : IEndpoint
     private static async Task<IResult> HandleAsync(IMediator mediator, ResetPasswordCommand command)
     {
         var result = await mediator.Send(command);
-        return ResponseHelper.CustomResponse(result);
+        return result.IsSuccess ? TypedResults.Ok(result) : TypedResults.BadRequest(result);
     }
 }

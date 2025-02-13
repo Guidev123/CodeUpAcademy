@@ -1,5 +1,4 @@
-﻿using CodeUp.API.Endpoints.Helpers;
-using CodeUp.Common.Responses;
+﻿using CodeUp.Common.Responses;
 using MediatR;
 using Modules.Authentication.Application.Commands.Delete;
 
@@ -13,6 +12,6 @@ public sealed class DeleteUserEndpoint : IEndpoint
     private static async Task<IResult> HandleAsync(IMediator mediator, Guid id)
     {
         var result = await mediator.Send(new DeleteUserCommand(id));
-        return ResponseHelper.CustomResponse(result);
+        return result.IsSuccess ? TypedResults.NoContent() : TypedResults.BadRequest(result);
     }
 }

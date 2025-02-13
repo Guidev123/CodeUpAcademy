@@ -1,5 +1,4 @@
-﻿using CodeUp.API.Endpoints.Helpers;
-using CodeUp.Common.Responses;
+﻿using CodeUp.Common.Responses;
 using MediatR;
 using Modules.Authentication.Application.Commands.Register;
 using Modules.Authentication.Application.DTOs;
@@ -13,6 +12,6 @@ public sealed class RegisterUserEndpoint : IEndpoint
     private static async Task<IResult> HandleAsync(IMediator mediator, RegisterUserCommand command)
     {
         var result = await mediator.Send(command);
-        return ResponseHelper.CustomResponse(result);
+        return result.IsSuccess ? TypedResults.Ok(result) : TypedResults.BadRequest(result);
     }
 }

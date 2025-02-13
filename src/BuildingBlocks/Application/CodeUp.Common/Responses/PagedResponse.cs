@@ -14,7 +14,7 @@ public class PagedResponse<TData> : Response<TData>
         int totalCount,
         int currentPage = DEFAULT_PAGE,
         int pageSize = DEFAULT_PAGE_SIZE,
-        int? code = DEFAULT_SUCCESS_STATUS_CODE,
+        int code = DEFAULT_SUCCESS_STATUS_CODE,
         string? message = null,
         List<string>? errors = null)
         : base(data, code, message, errors)

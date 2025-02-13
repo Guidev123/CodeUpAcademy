@@ -6,8 +6,8 @@ using Modules.Students.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
-builder.AddSecurity();
 builder.AddCorsConfig();
+builder.AddSecurity();
 builder.AddCommonConfig();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddAutheticationModule(builder.Configuration);
