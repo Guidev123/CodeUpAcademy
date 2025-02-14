@@ -20,6 +20,7 @@ public static class Endpoint
 
         endpoints.MapGroup("api/v1/students")
             .WithTags("Students")
+            .MapEndpoint<GetStudentByIdEndpoint>()
             .MapEndpoint<AddProfilePictureEndpoint>();
     }
 
