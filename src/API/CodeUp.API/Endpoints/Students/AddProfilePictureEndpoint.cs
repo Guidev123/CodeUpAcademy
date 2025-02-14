@@ -12,6 +12,6 @@ public sealed class AddProfilePictureEndpoint : IEndpoint
     private static async Task<IResult> HandleAsync(IMediator mediator, AddProfilePictureCommand command)
     {
         var result = await mediator.Send(command);
-        return result.IsSuccess ? TypedResults.Ok(result) : TypedResults.BadRequest(result);
+        return result.IsSuccess ? TypedResults.NoContent() : TypedResults.BadRequest(result);
     }
 }
