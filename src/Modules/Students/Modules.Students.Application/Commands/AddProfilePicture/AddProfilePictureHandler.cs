@@ -35,12 +35,6 @@ public sealed class AddProfilePictureHandler(INotificator notificator,
             return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
         }
 
-        if (string.IsNullOrEmpty(request.ProfilePicture))
-        {
-            Notify("Invalid image data.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation");
-        }
-
         var imageStream = ConvertBase64ToStream(request.ProfilePicture, out string contentType);
         if (imageStream is null)
         {
