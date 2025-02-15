@@ -12,5 +12,7 @@ public sealed class UserTokenMapping : IEntityTypeConfiguration<UserToken>
         builder.HasKey(u => u.Id);
         builder.Property(u => u.ExpiresAt).IsRequired();
         builder.Property(u => u.CreatedAt).IsRequired();
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

@@ -70,5 +70,7 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.TwoFactorEnabled)
             .IsRequired();
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }

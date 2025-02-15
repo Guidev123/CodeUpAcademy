@@ -15,5 +15,7 @@ public sealed class RoleMapping : IEntityTypeConfiguration<Role>
         builder.Property(r => r.Name)
             .IsRequired().HasColumnType("VARCHAR")
             .HasMaxLength(50);
+
+        builder.HasQueryFilter(x => !x.IsDeleted);
     }
 }
