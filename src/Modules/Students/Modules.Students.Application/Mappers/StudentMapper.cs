@@ -1,6 +1,7 @@
 ﻿using Modules.Students.Application.Commands.Create;
 using Modules.Students.Application.Queries.GetById;
 using Modules.Students.Domain.Entities;
+using Modules.Students.Domain.Enums;
 
 namespace Modules.Students.Application.Mappers;
 
@@ -12,7 +13,7 @@ public static class StudentMapper
     public static GetStudentByIdResponse MapFromEntity(this Student student)
         => new(student.FirstName, student.LastName, student.Email.Address, 
             student.Phone.Number, student.Document.Number, student.BirthDate, 
-            student.ProfilePicture, nameof(student.Type), student.Address);
+            student.ProfilePicture, (int)student.Type == (int)StudentTypeEnum.Free ? nameof(StudentTypeEnum.Free) : nameof(StudentTypeEnum.Premium), student.Address);
 
 
 }

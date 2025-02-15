@@ -15,6 +15,6 @@ public interface IUserRepository : IDisposable
     Task<Role?> GetRoleByNameAsync(string roleName);
     void Update(User user);
     Task DeleteAsync(User user);
-    void DeleteUserRoles(List<UserRole> roles);
+    void DeleteUserRoles(UserRole roles);
     void DeleteUserToken(UserToken userToken);
 }

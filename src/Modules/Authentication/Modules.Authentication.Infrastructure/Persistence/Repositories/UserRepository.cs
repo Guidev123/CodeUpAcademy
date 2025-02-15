@@ -39,8 +39,8 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
                     DeletedAt = GETDATE()
                 WHERE Id = {user.Id}");
 
-    public void DeleteUserRoles(List<UserRole> roles)
-        =>  _context.UserRoles.RemoveRange(roles);
+    public void DeleteUserRoles(UserRole roles)
+        =>  _context.UserRoles.Remove(roles);
 
     public async Task CreateUserTokenAsync(UserToken userToken)
         => await _context.UserTokens.AddAsync(userToken);
