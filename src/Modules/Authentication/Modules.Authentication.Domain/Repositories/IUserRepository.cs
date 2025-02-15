@@ -10,9 +10,11 @@ public interface IUserRepository : IDisposable
     Task<User?> GetByIdAsync(Guid id);
     Task<User?> GetByEmailAsync(string email);
     Task<UserToken?> GetTokenByUserIdAsync(Guid userId);
-    Task<ICollection<string>> GetUserRolesAsync(Guid userId);
+    Task<ICollection<string>> GetUserRoleNamesByUserIdAsync(Guid userId);
+    Task<List<UserRole>> GetUserRolesAsync(Guid userId);
     Task<Role?> GetRoleByNameAsync(string roleName);
     void Update(User user);
     Task DeleteAsync(User user);
+    void DeleteUserRoles(List<UserRole> roles);
     void DeleteUserToken(UserToken userToken);
 }

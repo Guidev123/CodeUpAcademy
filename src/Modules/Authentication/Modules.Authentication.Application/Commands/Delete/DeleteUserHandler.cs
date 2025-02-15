@@ -25,6 +25,8 @@ public sealed class DeleteUserHandler(INotificator notificator,
         }
 
         await _userRepository.DeleteAsync(user);
+        var userRoles = await _userRepository.GetUserRolesAsync(request.UserId);
+        _userRepository.DeleteUserRoles(userRoles);
 
         await _bus.PublishAsync<UserDeletedIntegrationEvent>(new(user.Id));
 

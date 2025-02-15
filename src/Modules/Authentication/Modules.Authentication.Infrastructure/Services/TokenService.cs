@@ -56,7 +56,7 @@ public sealed class TokenService(IUserRepository userRepository,
     #region Helpers
     private async Task<User?> GetUserByEmail(string email) => await _userRepository.GetByEmailAsync(email);
 
-    private async Task<ICollection<string>> GetUserRoles(Guid userId) => await _userRepository.GetUserRolesAsync(userId);
+    private async Task<ICollection<string>> GetUserRoles(Guid userId) => await _userRepository.GetUserRoleNamesByUserIdAsync(userId);
 
     private static List<Claim> BuildUserClaimsAsync(User user, ICollection<string> userRoles)
     {
