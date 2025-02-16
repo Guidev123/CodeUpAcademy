@@ -35,6 +35,10 @@ public sealed class RegisterUserValidation : AbstractValidator<RegisterUserComma
                 .When(x => !string.IsNullOrEmpty(x.Password))
                 .NotEmpty().WithMessage("The password field cannot be empty.")
                 .MinimumLength(8).WithMessage("The password must be at least 8 characters long.");
+
+        RuleFor(x => x.BirthDate)
+            .NotEmpty().WithMessage("The {PropertyName} field cannot be empty.")
+            .Must(IsValidAge).WithMessage("You need to be over 16 years old.");
     }
 
     private static bool HasUpperCase(string password) => password.Any(char.IsUpper);
@@ -42,6 +46,16 @@ public sealed class RegisterUserValidation : AbstractValidator<RegisterUserComma
     private static bool HasLowerCase(string password) => password.Any(char.IsLower);
 
     private static bool HasDigit(string password) => password.Any(char.IsDigit);
+
+    private static bool IsValidAge(DateTime birthDate)
+    {
+        var today = DateTime.Today;
+        var age = today.Year - birthDate.Year;
+
+        if (birthDate.Date > today.AddYears(-age)) age--;
+
+        return age >= 16;
+    }
 
     private static bool HasSpecialCharacter(string password)
     {
