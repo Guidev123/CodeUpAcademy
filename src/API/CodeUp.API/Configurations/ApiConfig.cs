@@ -3,8 +3,11 @@ using CodeUp.Common.Notifications;
 using CodeUp.Email;
 using CodeUp.Email.Models;
 using CodeUp.MessageBus;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using SendGrid.Extensions.DependencyInjection;
 using System.Reflection;
+using System.Text;
 
 namespace CodeUp.API.Configurations;
 
@@ -35,7 +38,30 @@ public static class ApiConfig
 
     public static void AddSecurity(this WebApplicationBuilder builder)
     {
-        builder.Services.AddAuthentication();
+        var appSettingsSection = builder.Configuration.GetSection(nameof(JwtExtension));
+        builder.Services.Configure<JwtExtension>(appSettingsSection);
+
+        var appSettings = appSettingsSection.Get<JwtExtension>() ?? new();
+        var key = Encoding.ASCII.GetBytes(appSettings.Secret);
+
+        builder.Services.AddAuthentication(x =>
+        {
+            x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(x =>
+        {
+            x.RequireHttpsMetadata = true;
+            x.SaveToken = true;
+            x.TokenValidationParameters = new TokenValidationParameters
+            {
+                ValidateIssuerSigningKey = true,
+                IssuerSigningKey = new SymmetricSecurityKey(key),
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidAudience = appSettings.Audience,
+                ValidIssuer = appSettings.Issuer
+            };
+        });
         builder.Services.AddAuthorization();
     }
 

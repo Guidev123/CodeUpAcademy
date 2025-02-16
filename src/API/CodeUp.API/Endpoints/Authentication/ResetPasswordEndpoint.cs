@@ -7,7 +7,7 @@ namespace CodeUp.API.Endpoints.Authentication;
 public sealed class ResetPasswordEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-    => app.MapPut("/reset-password", HandleAsync).Produces<Response<ResetPasswordResponse>>();
+    => app.MapPut("/reset-password", HandleAsync).Produces<Response<ResetPasswordResponse>>().RequireAuthorization();
 
     private static async Task<IResult> HandleAsync(IMediator mediator, ResetPasswordCommand command)
     {

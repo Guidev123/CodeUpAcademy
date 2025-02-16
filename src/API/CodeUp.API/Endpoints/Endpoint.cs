@@ -16,10 +16,12 @@ public static class Endpoint
             .MapEndpoint<ForgotPasswordEndpoint>()
             .MapEndpoint<ResetPasswordEndpoint>()
             .MapEndpoint<LoginUserEndpoint>()
+            .MapEndpoint<RefreshTokenEndpoint>()
             .MapEndpoint<RegisterUserEndpoint>();
 
         endpoints.MapGroup("api/v1/students")
             .WithTags("Students")
+            .RequireAuthorization()
             .MapEndpoint<GetStudentByIdEndpoint>()
             .MapEndpoint<AddProfilePictureEndpoint>();
     }

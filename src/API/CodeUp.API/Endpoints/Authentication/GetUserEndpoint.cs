@@ -7,7 +7,7 @@ namespace CodeUp.API.Endpoints.Authentication;
 public sealed class GetUserEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapGet("/", HandleAsync).Produces<Response<GetUserByIdResponse>>();
+        => app.MapGet("/", HandleAsync).Produces<Response<GetUserByIdResponse>>().RequireAuthorization();
 
     private static async Task<IResult> HandleAsync(IMediator mediator)
     {

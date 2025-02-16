@@ -56,6 +56,4 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
         _context.Dispose();
         GC.SuppressFinalize(this);
     }
-
-
 }

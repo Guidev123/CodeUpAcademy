@@ -7,7 +7,7 @@ namespace CodeUp.API.Endpoints.Authentication;
 public sealed class DeleteUserEndpoint : IEndpoint
 {
     public static void Map(IEndpointRouteBuilder app)
-        => app.MapDelete("/{id:guid}", HandleAsync).Produces<Response<DeleteUserResponse>>();
+        => app.MapDelete("/{id:guid}", HandleAsync).Produces<Response<DeleteUserResponse>>().RequireAuthorization();
 
     private static async Task<IResult> HandleAsync(IMediator mediator, Guid id)
     {
