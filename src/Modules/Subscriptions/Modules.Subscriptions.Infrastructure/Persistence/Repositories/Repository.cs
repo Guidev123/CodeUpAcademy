@@ -9,7 +9,7 @@ public sealed class Repository<T>(SubscriptionsDbContext context) : IRepository<
 {
     private readonly DbSet<T> _entity = context.Set<T>();
 
-    public async Task<List<T>> GetDataAsync(Expression<Func<T, bool>>? expression = null, Func<IQueryable<T>, IQueryable<T>>? include = null,
+    public async Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? expression = null, Func<IQueryable<T>, IQueryable<T>>? include = null,
                                       int? pageNumber = null, int? pageSize = null)
     {
         var query = _entity.AsQueryable();
