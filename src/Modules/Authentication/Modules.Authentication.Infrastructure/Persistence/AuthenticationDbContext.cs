@@ -15,7 +15,7 @@ public sealed class AuthenticationDbContext(DbContextOptions<AuthenticationDbCon
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.HasDefaultSchema("authentication");
-        modelBuilder.Ignore<Event>();
+        modelBuilder.Ignore<Event>();   
 
         var properties = modelBuilder.Model.GetEntityTypes()
             .SelectMany(p => p.GetProperties())

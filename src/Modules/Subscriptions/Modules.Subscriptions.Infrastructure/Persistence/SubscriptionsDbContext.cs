@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CodeUp.SharedKernel.DomainObjects;
+using Microsoft.EntityFrameworkCore;
 using Modules.Subscriptions.Domain.Entities;
+using System.Reflection;
 
 namespace Modules.Subscriptions.Infrastructure.Persistence;
 
@@ -11,6 +13,17 @@ public sealed class SubscriptionsDbContext(DbContextOptions<SubscriptionsDbConte
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Ignore<Event>();
+
+        var properties = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(p => p.GetProperties())
+            .Where(p => p.ClrType == typeof(string));
+
+        foreach (var property in properties)
+            property.SetColumnType("varchar(160)");
+
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         base.OnModelCreating(modelBuilder);
     }
 }
