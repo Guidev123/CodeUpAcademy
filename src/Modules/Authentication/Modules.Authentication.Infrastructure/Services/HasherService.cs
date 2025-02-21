@@ -2,7 +2,7 @@
 
 namespace Modules.Authentication.Infrastructure.Services;
 
-public sealed class PasswordHashService : IHasherService
+public sealed class HasherService : IHasherService
 {
     public string HashPassword(string password) => BCrypt.Net.BCrypt.HashPassword(password);
     public bool VerifyPassword(string password, string hash) => BCrypt.Net.BCrypt.Verify(password, hash);

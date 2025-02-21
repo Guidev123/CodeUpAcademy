@@ -33,7 +33,7 @@ public static class InfrastructureModule
         => services.AddTransient<IUserService, UserService>();  
 
     public static void AddPasswordHasherService(this IServiceCollection services)
-        => services.AddTransient<IHasherService, PasswordHashService>();
+        => services.AddTransient<IHasherService, HasherService>();
 
     public static void AddDbContext(this IServiceCollection services, IConfiguration configuration) =>
         services.AddDbContext<AuthenticationDbContext>(opt =>
