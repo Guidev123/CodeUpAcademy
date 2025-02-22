@@ -1,6 +1,4 @@
-﻿using CodeUp.SharedKernel.DomainObjects;
-
-namespace Modules.Authentication.Domain.Models;
+﻿namespace Modules.Authentication.Domain.Models;
 
 public class RefreshToken
 {
