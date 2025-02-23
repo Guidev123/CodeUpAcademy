@@ -13,24 +13,28 @@ public abstract class Entity
     public DateTime CreatedAt { get; }
     public bool IsDeleted { get; private set; }
     public DateTime? DeletedAt { get; private set; }
-    public void SetAsDeleted()
+
+    public override bool Equals(object? obj)
     {
-        DeletedAt = DateTime.Now;   
-        IsDeleted = true;
+        var compareTo = obj as Entity;
+
+        if (ReferenceEquals(this, compareTo)) return true;
+        if (ReferenceEquals(null, compareTo)) return false;
+
+        return Id.Equals(compareTo.Id);
     }
 
-    private readonly List<Event> _events = [];
-    public IReadOnlyCollection<Event> Events => _events.AsReadOnly();
-    public void AddEvent(Event @event) => _events.Add(@event);
-    public void RemoveEvent(Event @event) => _events.Remove(@event);
-    public void ClearEvents() => _events.Clear();
+    public static bool operator ==(Entity a, Entity b)
+    {
+        if (ReferenceEquals(a, null) && ReferenceEquals(b, null)) return true;
+        if (ReferenceEquals(a, null) || ReferenceEquals(b, null)) return false;
 
-    public override bool Equals(object? obj) =>
-        obj is Entity entity &&
-               Id.Equals(entity.Id) &&
-               CreatedAt == entity.CreatedAt &&
-               EqualityComparer<List<Event>>.Default.Equals(_events, entity._events) &&
-               EqualityComparer<IReadOnlyCollection<Event>>.Default.Equals(Events, entity.Events);
+        return a.Equals(b);
+    }
 
-    public override int GetHashCode() => HashCode.Combine(Id, CreatedAt, _events, Events);
+    public static bool operator !=(Entity a, Entity b) => !(a == b);
+
+    public override int GetHashCode() => (GetType().GetHashCode() * 907) + Id.GetHashCode();
+
+    public override string ToString() => $"{GetType().Name} [Id = {Id}]";
 }
