@@ -36,5 +36,6 @@ public class Student : Entity, IAggregateRoot
         AssertionConcern.EnsureNotNull(Email, "Email cannot be null.");
         AssertionConcern.EnsureNotNull(Phone, "Phone cannot be null.");
         AssertionConcern.EnsureNotNull(Document, "Document cannot be null.");
+        AssertionConcern.EnsureLengthInRange(Document.Number, 11, 11, "Document is invalid.");
     }
 }
