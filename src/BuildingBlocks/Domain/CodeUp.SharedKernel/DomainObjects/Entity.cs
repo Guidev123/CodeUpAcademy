@@ -9,7 +9,7 @@ public abstract class Entity
         IsDeleted = false;
     }
 
-    public virtual Guid Id { get; }
+    public Guid Id { get; protected set; }
     public DateTime CreatedAt { get; }
     public bool IsDeleted { get; private set; }
     public DateTime? DeletedAt { get; private set; }

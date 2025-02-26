@@ -18,6 +18,7 @@ public class User : Entity, IAggregateRoot
         EmailConfirmed = false;
         PhoneConfirmed = false;
         TwoFactorEnabled = false;
+        Validate();
     }
 
     protected User() { }
@@ -81,5 +82,23 @@ public class User : Entity, IAggregateRoot
     public static UserRole AddRole(Guid userId, Guid roleId) => new(roleId, userId);
 
     public void UpdatePassword(string password) => PasswordHash = password;
+
+    public void Validate()
+    {
+        AssertionConcern.EnsureNotEmpty(FirstName, "First name cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(FirstName, 2, 50, "First name must be between 2 and 50 characters.");
+
+        AssertionConcern.EnsureNotEmpty(LastName, "Last name cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(LastName, 2, 50, "Last name must be between 2 and 50 characters.");
+
+        AssertionConcern.EnsureNotNull(Email, "Email cannot be null.");
+
+        AssertionConcern.EnsureNotNull(Phone, "Phone cannot be null.");
+
+        AssertionConcern.EnsureTrue(BirthDate <= DateTime.Today.AddYears(-16), "User must be at least 16 years old.");
+
+        AssertionConcern.EnsureNotEmpty(PasswordHash, "Password cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(PasswordHash, 8, 100, "Password must be between 8 and 100 characters.");
+    }
 }
 

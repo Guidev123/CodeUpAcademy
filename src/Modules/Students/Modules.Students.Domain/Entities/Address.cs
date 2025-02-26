@@ -16,6 +16,7 @@ public class Address : Entity
         City = city;
         State = state;
         StudentId = studentId;
+        Validate();
     }
 
     public string Street { get; private set; }
@@ -27,4 +28,26 @@ public class Address : Entity
     public string State { get; private set; }
     public Guid StudentId { get; private set; }
     public Student Student { get; private set; } = null!;
+
+    private void Validate()
+    {
+        AssertionConcern.EnsureNotEmpty(Street, "Street cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(Street, 2, 100, "Street must be between 2 and 100 characters.");
+
+        AssertionConcern.EnsureNotEmpty(Number, "Number cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(Number, 1, 10, "Number must be between 1 and 10 characters.");
+
+        AssertionConcern.EnsureNotEmpty(Neighborhood, "Neighborhood cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(Neighborhood, 2, 50, "Neighborhood must be between 2 and 50 characters.");
+
+        AssertionConcern.EnsureNotEmpty(ZipCode, "ZipCode cannot be empty.");
+
+        AssertionConcern.EnsureNotEmpty(City, "City cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(City, 2, 50, "City must be between 2 and 50 characters.");
+
+        AssertionConcern.EnsureNotEmpty(State, "State cannot be empty.");
+        AssertionConcern.EnsureLengthInRange(State, 2, 50, "State must be between 2 and 50 characters.");
+
+        AssertionConcern.EnsureNotNull(StudentId, "StudentId cannot be null.");
+    }
 }

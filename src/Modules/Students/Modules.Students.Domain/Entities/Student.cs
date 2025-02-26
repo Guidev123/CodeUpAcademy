@@ -16,20 +16,25 @@ public class Student : Entity, IAggregateRoot
         Document = new Document(document);
         BirthDate = birthDate;
         Type = StudentTypeEnum.Free;
+        Validate();
     }
-    protected Student() { }
 
-    public override Guid Id { get; }
-    public string FirstName { get; private set; } = string.Empty;
-    public string LastName { get; private set; } = string.Empty;
-    public Email Email { get; private set; } = null!;
-    public Phone Phone { get; private set; } = null!;
-    public Document Document { get; private set; } = null!;
+    public string FirstName { get; private set; }
+    public string LastName { get; private set; }
+    public Email Email { get; private set; }
+    public Phone Phone { get; private set; }
+    public Document Document { get; private set; }
     public DateTime BirthDate { get; private set; }
     public string? ProfilePicture { get; private set; }
     public StudentTypeEnum Type { get; private set; }
     public Address? Address { get; private set; }
-    public void SetAddress(Address address) => Address = address;   
-    public void SetStudentAsPremium() => Type = StudentTypeEnum.Premium;
-    public void SetProfilePicture(string profilePictureUrl) => ProfilePicture = profilePictureUrl;  
+
+    private void Validate()
+    {
+        AssertionConcern.EnsureNotEmpty(FirstName, "First name cannot be empty.");
+        AssertionConcern.EnsureNotEmpty(LastName, "Last name cannot be empty.");
+        AssertionConcern.EnsureNotNull(Email, "Email cannot be null.");
+        AssertionConcern.EnsureNotNull(Phone, "Phone cannot be null.");
+        AssertionConcern.EnsureNotNull(Document, "Document cannot be null.");
+    }
 }
