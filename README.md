@@ -1,7 +1,7 @@
 <body style="font-family: Arial, sans-serif; line-height: 1.6; background-color: #f4f4f4; padding: 20px; color: #333;">
     <div style="max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
         <h1 style="color: #0056b3; text-align: center;">🚀 CodeUpAcademy</h1>
-        <p><strong>CodeUpAcademy</strong> is an online learning platform where programming courses are sold. To access the courses, users need to purchase a subscription. 🎓</p>
+        <p><strong>CodeUpAcademy</strong> is an e-learning platform designed for programming education. The system follows a modular monolithic architecture with a strong emphasis on software architecture best practices. To access the courses, users must subscribe to a paid plan. 🎓</p>
       
   ![modular](https://github.com/user-attachments/assets/fc2c4dc6-f6b1-406b-83ee-0e2ac56fba0b)      
       
