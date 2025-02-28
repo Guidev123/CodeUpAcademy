@@ -3,7 +3,6 @@ using CodeUp.Common.Notifications;
 using CodeUp.Common.Responses;
 using CodeUp.IntegrationEvents.Authentication;
 using CodeUp.MessageBus;
-using MediatR;
 using Modules.Authentication.Domain.Models;
 using Modules.Authentication.Domain.Repositories;
 
@@ -25,13 +24,13 @@ public sealed class DeleteUserHandler(INotificator notificator,
         if(user is null)
         {
             Notify("User not found");
-            return Response<DeleteUserResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<DeleteUserResponse>.Failure(GetNotifications(), code: 404);
         }
 
         if(!await DeleteUserAsync(user))
         {
             Notify("Fail to delete user from base");
-            return Response<DeleteUserResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<DeleteUserResponse>.Failure(GetNotifications());
         }
 
         await _bus.PublishAsync<UserDeletedIntegrationEvent>(new(user.Id));

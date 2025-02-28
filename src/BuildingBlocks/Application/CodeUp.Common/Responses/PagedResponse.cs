@@ -35,14 +35,14 @@ public class PagedResponse<TData> : Response<TData>
         int currentPage = DEFAULT_PAGE,
         int pageSize = DEFAULT_PAGE_SIZE,
         int code = DEFAULT_SUCCESS_STATUS_CODE,
-        string? message = null)
+        string? message = DEFAULT_SUCCESS_MESSAGE)
     {
         return new PagedResponse<TData>(data, totalCount, currentPage, pageSize, code, message);
     }
 
-    public static PagedResponse<TData> Failure(
+    public static new PagedResponse<TData> Failure(
         List<string> errors,
-        string? message = null,
+        string? message = DEFAULT_ERROR_MESSAGE,
         int code = DEFAULT_ERROR_STATUS_CODE)
     {
         return new PagedResponse<TData>(default, 0, DEFAULT_PAGE, DEFAULT_PAGE_SIZE, code, message, errors);

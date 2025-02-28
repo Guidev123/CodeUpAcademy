@@ -20,14 +20,14 @@ public sealed class GetUserByIdHandler(IUserRepository userRepository,
         if (!userId.HasValue)
         {
             Notify("User not found");
-            return Response<GetUserByIdResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<GetUserByIdResponse>.Failure(GetNotifications(), code: 404);
         }
 
         var user = await _userRepository.GetByIdAsync(userId.Value);
         if(user is null)
         {
             Notify("User not found");
-            return Response<GetUserByIdResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<GetUserByIdResponse>.Failure(GetNotifications(), code: 404);
         }
 
         var userClaims = _userService.GetUserClaims();

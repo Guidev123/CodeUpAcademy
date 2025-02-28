@@ -33,11 +33,11 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (userExists is not null)
         {
             Notify("User already exists");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         if (!ExecuteValidation(new RegisterUserValidation(), request))
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
 
         var user = request.MapToEntity(_hasherService.HashPassword(request.Password));
         await _userRepository.CreateAsync(user);
@@ -46,14 +46,14 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (role is null)
         {
             Notify("Was not possible create user");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), code: 404);
         }
 
         var student = await RegisterStudentAsync(request, user);
         if (!student.IsValid)
         {
             student.Errors!.ToList().ForEach(Notify);
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         var userRole = User.AddRole(user.Id, role.Id);
@@ -63,14 +63,14 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         if (!await _uow.SaveChangesAsync())
         {
             Notify("Fail to persist data");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)
         {
             Notify("Fail to authenticate user");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         await RegisterLoginAsync(user);

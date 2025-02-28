@@ -19,42 +19,43 @@ public sealed class AddProfilePictureHandler(INotificator notificator,
     public override async Task<Response<AddProfilePictureResponse>> Handle(AddProfilePictureCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new AddProfilePictureValidation(), request))
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications());
 
         var userId = _user.GetUserId();
         if (userId is null || !userId.HasValue)
         {
             Notify("User not found.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), code: 404);
         }
 
         var student = await _studentRepository.GetByIdAsync(userId.Value);
         if (student is null)
         {
             Notify("Student not found.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), code: 404);
         }
 
         var imageStream = ConvertBase64ToStream(request.ProfilePicture, out string contentType);
         if (imageStream is null)
         {
             Notify("Failed to process image.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications());
         }
 
         var imageUrl = await _blob.UploadAsync(imageStream, contentType, cancellationToken);
         if (string.IsNullOrEmpty(imageUrl))
         {
             Notify("Something has failed to save your profile picture.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications());
         }
 
         student.SetProfilePicture(imageUrl);
         _studentRepository.Update(student);
+
         if(!await _studentRepository.SaveChangesAsync())
         {
             Notify("Fail to persist data.");
-            return Response<AddProfilePictureResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<AddProfilePictureResponse>.Failure(GetNotifications());
         }
 
         return Response<AddProfilePictureResponse>.Success(null);

@@ -23,11 +23,11 @@ public sealed class ResetPasswordHandler(INotificator notificator,
         if (user is null)
         {
             Notify("User not found");
-            return Response<ResetPasswordResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<ResetPasswordResponse>.Failure(GetNotifications());
         }
 
         if (!await TokenIsValid(user.Id, request.Token))
-            return Response<ResetPasswordResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<ResetPasswordResponse>.Failure(GetNotifications());
 
         user.UpdatePassword(_hasherService.HashPassword(request.Password));
         _userRepository.Update(user);
@@ -35,7 +35,7 @@ public sealed class ResetPasswordHandler(INotificator notificator,
         if (!await _uow.SaveChangesAsync())
         {
             Notify("Fail to persist data");
-            return Response<ResetPasswordResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<ResetPasswordResponse>.Failure(GetNotifications());
         }
 
         return Response<ResetPasswordResponse>.Success(null, 204);

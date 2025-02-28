@@ -23,19 +23,19 @@ public sealed class LoginUserHandler(INotificator notificator,
     public override async Task<Response<LoginResponseDTO>> Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new LoginUserValidation(), request))
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
         if (user is null)
         {
             Notify("User not found");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         if (!user.UserIsAbleToLogin())
         {
             Notify("You have been temporarily blocked due to multiple failed login attempts with wrong credentials");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<LoginResponseDTO>.Failure(GetNotifications(), code: 404);
         }
 
         var passwordMatch = _hasherService.VerifyPassword(request.Password, user.PasswordHash);
@@ -44,14 +44,14 @@ public sealed class LoginUserHandler(INotificator notificator,
             await UpdateUserAsync(user);
 
             Notify("User credentials are wrong");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         var token = await _tokenService.GenerateJWT(request.Email);
         if (!token.IsSuccess)
         {
             Notify("Fail to authenticate user");
-            return Response<LoginResponseDTO>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
         await RegisterLoginAsync(user);

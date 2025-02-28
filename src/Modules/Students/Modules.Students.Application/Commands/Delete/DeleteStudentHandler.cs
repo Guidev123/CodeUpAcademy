@@ -16,7 +16,7 @@ public sealed class DeleteStudentHandler(INotificator notificator,
         if(student is null)
         {
             Notify("Student not found.");
-            return Response<DeleteStudentResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<DeleteStudentResponse>.Failure(GetNotifications(), code: 404);
         }
 
         await _studentRepository.DeleteAsync(request.StudentId);

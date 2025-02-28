@@ -24,13 +24,13 @@ public sealed class ForgotPasswordHandler(INotificator notificator,
     public override async Task<Response<ForgotPasswordResponse>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new ForgotPasswordValidation(), request))
-            return Response<ForgotPasswordResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<ForgotPasswordResponse>.Failure(GetNotifications());
 
         var user = await _userRepository.GetByEmailAsync(request.Email);
         if (user is null)
         {
             Notify("User not found");
-            return Response<ForgotPasswordResponse>.Failure(GetNotifications(), "Invalid Operation", 404);
+            return Response<ForgotPasswordResponse>.Failure(GetNotifications(), code: 404);
         }
 
         var token = _hasherService.GenerateToken();

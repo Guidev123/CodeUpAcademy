@@ -29,6 +29,12 @@ public class Student : Entity, IAggregateRoot
     public StudentTypeEnum Type { get; private set; }
     public Address? Address { get; private set; }
 
+    public void SetProfilePicture(string picture)
+    {
+        AssertionConcern.EnsureNotEmpty(picture, "Picture cannot be empty.");
+        ProfilePicture = picture;
+    }
+
     private void Validate()
     {
         AssertionConcern.EnsureNotEmpty(FirstName, "First name cannot be empty.");

@@ -16,12 +16,12 @@ public sealed class CreateStudentHandler(INotificator notificator,
     public override async Task<Response<CreateStudentResponse>> Handle(CreateStudentCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new CreateStudentValidation(), request))
-            return Response<CreateStudentResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<CreateStudentResponse>.Failure(GetNotifications());
 
         if(await _studentRepository.AlreadyExistsAsync(request.Document))
         {
             Notify("Student already exists.");
-            return Response<CreateStudentResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<CreateStudentResponse>.Failure(GetNotifications());
         }
 
         await _studentRepository.CreateAsync(request.MapToEntity());
@@ -29,7 +29,7 @@ public sealed class CreateStudentHandler(INotificator notificator,
         if(!await _studentRepository.SaveChangesAsync())
         {
             Notify("Fail to persist data.");
-            return Response<CreateStudentResponse>.Failure(GetNotifications(), "Invalid Operation");
+            return Response<CreateStudentResponse>.Failure(GetNotifications());
         }
 
         return Response<CreateStudentResponse>.Success(null, 201);
