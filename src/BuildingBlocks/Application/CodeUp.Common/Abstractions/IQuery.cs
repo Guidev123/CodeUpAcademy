@@ -7,3 +7,8 @@ public interface IQuery<TResult> : IRequest<Response<TResult>>
 {
 
 }
+
+public interface IPagedQuery<TResult> : IRequest<PagedResponse<TResult>>
+{
+
+}

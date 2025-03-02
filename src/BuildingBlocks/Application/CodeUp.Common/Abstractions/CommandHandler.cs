@@ -6,7 +6,7 @@ using MediatR;
 
 namespace CodeUp.Common.Abstractions;
 
-public abstract class CommandHandler<TCommand, TResult>(INotificator notificator) : IRequestHandler<TCommand, Response<TResult>>
+public abstract class CommandHandler<TCommand, TResult>(INotificator notificator) : ICommandHandler<TCommand, TResult>
                       where TCommand : IRequest<Response<TResult>>
 
 {
