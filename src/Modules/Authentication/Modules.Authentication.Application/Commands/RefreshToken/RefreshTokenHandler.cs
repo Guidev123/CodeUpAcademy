@@ -11,7 +11,8 @@ public sealed class RefreshTokenHandler(
                     ITokenService tokenService)
                   : CommandHandler<RefreshTokenCommand, LoginResponseDTO>(notificator)
 {
-    private readonly ITokenService _tokenService = tokenService;   
+    private readonly ITokenService _tokenService = tokenService;
+
     public override async Task<Response<LoginResponseDTO>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(request.RefreshToken))
@@ -28,7 +29,7 @@ public sealed class RefreshTokenHandler(
         }
 
         var token = await _tokenService.GenerateJWT(refreshToken.Data!.UserEmail);
-        if(!token.IsSuccess || token.Data is null)
+        if (!token.IsSuccess || token.Data is null)
         {
             Notify("Fail to generate token.");
             return Response<LoginResponseDTO>.Failure(GetNotifications());

@@ -1,13 +1,12 @@
-﻿using System.Text.Json.Serialization;
-
-namespace CodeUp.Common.Responses;
+﻿namespace CodeUp.Common.Responses;
 
 public class PagedResponse<TData> : Response<TData>
 {
     private const int DEFAULT_PAGE_SIZE = 10;
     private const int DEFAULT_PAGE = 1;
 
-    public PagedResponse() { }
+    public PagedResponse()
+    { }
 
     protected PagedResponse(
         TData? data,
@@ -40,7 +39,7 @@ public class PagedResponse<TData> : Response<TData>
         return new PagedResponse<TData>(data, totalCount, currentPage, pageSize, code, message);
     }
 
-    public static new PagedResponse<TData> Failure(
+    public new static PagedResponse<TData> Failure(
         List<string> errors,
         string? message = DEFAULT_ERROR_MESSAGE,
         int code = DEFAULT_ERROR_STATUS_CODE)

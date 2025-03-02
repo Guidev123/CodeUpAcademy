@@ -16,7 +16,7 @@ public sealed class StudentRepository(StudentDbContext context) : IStudentReposi
 
     public async Task DeleteAsync(Guid id)
         => await _context.Database.ExecuteSqlInterpolatedAsync(@$"
-            UPDATE students.Students 
+            UPDATE students.Students
                 SET IsDeleted = 1,
                 DeletedAt = GETDATE()
             WHERE Id = {id}");
@@ -26,7 +26,7 @@ public sealed class StudentRepository(StudentDbContext context) : IStudentReposi
 
     public void Update(Student student)
         => _context.Students.Update(student);
-    
+
     public async Task<bool> AlreadyExistsAsync(string document)
         => await _context.Students.AnyAsync(x => x.Document.Number == document);
 

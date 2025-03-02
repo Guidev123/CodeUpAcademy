@@ -8,13 +8,13 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
 {
     private readonly AuthenticationDbContext _context = context;
 
-    public async Task<Role?> GetRoleByNameAsync(string roleName) 
+    public async Task<Role?> GetRoleByNameAsync(string roleName)
         => await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Name == roleName);
 
     public async Task<List<UserRole>> GetUserRolesAsync(Guid userId)
         => await _context.UserRoles.AsNoTracking().Where(x => x.UserId == userId).ToListAsync();
 
-    public async Task<User?> GetByIdAsync(Guid id) 
+    public async Task<User?> GetByIdAsync(Guid id)
         => await _context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
 
     public async Task<User?> GetByEmailAsync(string email)
@@ -40,7 +40,7 @@ public sealed class UserRepository(AuthenticationDbContext context) : IUserRepos
                 WHERE Id = {user.Id}");
 
     public void DeleteUserRoles(UserRole roles)
-        =>  _context.UserRoles.Remove(roles);
+        => _context.UserRoles.Remove(roles);
 
     public async Task CreateUserTokenAsync(UserToken userToken)
         => await _context.UserTokens.AddAsync(userToken);

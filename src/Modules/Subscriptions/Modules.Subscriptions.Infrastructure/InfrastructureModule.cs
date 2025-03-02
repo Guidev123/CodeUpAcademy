@@ -9,7 +9,6 @@ public static class InfrastructureModule
 {
     public static void AddSubscriptionModule(this IServiceCollection services, IConfiguration configuration)
     {
-
     }
 
     public static void AddRepositories(this IServiceCollection services)

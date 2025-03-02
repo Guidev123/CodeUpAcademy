@@ -11,7 +11,7 @@ namespace Modules.Authentication.Application.Commands.Delete;
 public sealed class DeleteUserHandler(INotificator notificator,
                                       IUserRepository userRepository,
                                       IUnitOfWork uow,
-                                      IMessageBus bus) 
+                                      IMessageBus bus)
                                     : CommandHandler<DeleteUserCommand, DeleteUserResponse>(notificator)
 {
     private readonly IUserRepository _userRepository = userRepository;
@@ -21,13 +21,13 @@ public sealed class DeleteUserHandler(INotificator notificator,
     public override async Task<Response<DeleteUserResponse>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetByIdAsync(request.UserId);
-        if(user is null)
+        if (user is null)
         {
             Notify("User not found");
             return Response<DeleteUserResponse>.Failure(GetNotifications(), code: 404);
         }
 
-        if(!await DeleteUserAsync(user))
+        if (!await DeleteUserAsync(user))
         {
             Notify("Fail to delete user from base");
             return Response<DeleteUserResponse>.Failure(GetNotifications());

@@ -19,6 +19,7 @@ public sealed class LoginUserValidation : AbstractValidator<LoginUserCommand>
         .Must(HasDigit).WithMessage("The password must contain at least one digit.")
         .Must(HasSpecialCharacter).WithMessage("The password must contain at least one special character (!@#$%^&* etc.).");
     }
+
     private static bool HasUpperCase(string password) => password.Any(char.IsUpper);
 
     private static bool HasLowerCase(string password) => password.Any(char.IsLower);

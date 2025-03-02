@@ -10,6 +10,7 @@ public sealed class UserService(IHttpContextAccessor httpContextAccessor) : IUse
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public HttpContext GetHttpContext() => _httpContextAccessor.HttpContext!;
+
     private string GetToken()
     {
         if (GetHttpContext().Request.Headers.TryGetValue("Authorization", out StringValues authorizationHeader))

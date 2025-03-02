@@ -18,7 +18,7 @@ public sealed class CreateStudentHandler(INotificator notificator,
         if (!ExecuteValidation(new CreateStudentValidation(), request))
             return Response<CreateStudentResponse>.Failure(GetNotifications());
 
-        if(await _studentRepository.AlreadyExistsAsync(request.Document))
+        if (await _studentRepository.AlreadyExistsAsync(request.Document))
         {
             Notify("Student already exists.");
             return Response<CreateStudentResponse>.Failure(GetNotifications());
@@ -26,7 +26,7 @@ public sealed class CreateStudentHandler(INotificator notificator,
 
         await _studentRepository.CreateAsync(request.MapToEntity());
 
-        if(!await _studentRepository.SaveChangesAsync())
+        if (!await _studentRepository.SaveChangesAsync())
         {
             Notify("Fail to persist data.");
             return Response<CreateStudentResponse>.Failure(GetNotifications());

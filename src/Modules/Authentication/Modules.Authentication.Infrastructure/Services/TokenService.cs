@@ -54,6 +54,7 @@ public sealed class TokenService(IUserRepository userRepository,
     }
 
     #region Helpers
+
     private async Task<User?> GetUserByEmail(string email) => await _userRepository.GetByEmailAsync(email);
 
     private async Task<ICollection<string>> GetUserRoles(Guid userId) => await _userRepository.GetUserRoleNamesByUserIdAsync(userId);
@@ -110,5 +111,6 @@ public sealed class TokenService(IUserRepository userRepository,
 
     private static long ToUnixEpochDate(DateTime date)
         => (long)Math.Round((date.ToUniversalTime() - new DateTimeOffset(1970, 1, 1, 0, 0, 0, TimeSpan.Zero)).TotalSeconds);
-    #endregion
+
+    #endregion Helpers
 }

@@ -12,7 +12,7 @@ public static class Endpoint
         endpoints.MapGroup("api/v1/auth")
             .WithTags("Authentication")
             .MapEndpoint<DeleteUserEndpoint>()
-            .MapEndpoint<GetUserEndpoint>() 
+            .MapEndpoint<GetUserEndpoint>()
             .MapEndpoint<ForgotPasswordEndpoint>()
             .MapEndpoint<ResetPasswordEndpoint>()
             .MapEndpoint<LoginUserEndpoint>()

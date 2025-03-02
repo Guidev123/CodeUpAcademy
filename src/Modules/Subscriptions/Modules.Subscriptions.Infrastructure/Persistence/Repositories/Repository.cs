@@ -17,10 +17,10 @@ public sealed class Repository<T>(SubscriptionsDbContext context) : IRepository<
         if (expression is not null)
             query = query.Where(expression);
 
-        if(include is not null)
+        if (include is not null)
             query = include(query);
 
-        if(pageNumber is not null && pageNumber.HasValue)
+        if (pageNumber is not null && pageNumber.HasValue)
             query = query.Skip(pageNumber.Value);
 
         if (pageSize is not null && pageSize.HasValue)

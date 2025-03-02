@@ -42,7 +42,6 @@ public static class DocsConfig
         });
     }
 
-
     public static void UseSwaggerConfig(this IApplicationBuilder app)
     {
         app.UseSwagger();

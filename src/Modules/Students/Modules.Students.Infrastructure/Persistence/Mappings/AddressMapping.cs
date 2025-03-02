@@ -8,7 +8,6 @@ public sealed class AddressMapping : IEntityTypeConfiguration<Address>
 {
     public void Configure(EntityTypeBuilder<Address> builder)
     {
-
         builder.ToTable("Address");
 
         builder.HasKey(a => a.Id);

@@ -6,6 +6,5 @@ public sealed class ResetPasswordValidation : AbstractValidator<ResetPasswordCom
 {
     public ResetPasswordValidation()
     {
-        
     }
 }

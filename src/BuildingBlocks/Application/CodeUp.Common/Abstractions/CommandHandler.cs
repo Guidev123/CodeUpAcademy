@@ -11,6 +11,7 @@ public abstract class CommandHandler<TCommand, TResult>(INotificator notificator
 
 {
     private readonly INotificator _notificator = notificator;
+
     public abstract Task<Response<TResult>> Handle(TCommand request, CancellationToken cancellationToken);
 
     protected void Notify(ValidationResult validationResult)

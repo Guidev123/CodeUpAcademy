@@ -11,6 +11,7 @@ public abstract class QueryHandler<TQuery, TResult>(INotificator notificator) : 
     public abstract Task<Response<TResult>> Handle(TQuery request, CancellationToken cancellationToken);
 
     private readonly INotificator _notificator = notificator;
+
     protected void Notify(ValidationResult validationResult)
     {
         foreach (var item in validationResult.Errors) Notify(item.ErrorMessage);
@@ -27,6 +28,7 @@ public abstract class PagedQueryHandler<TQuery, TResult>(INotificator notificato
     public abstract Task<PagedResponse<TResult>> Handle(TQuery request, CancellationToken cancellationToken);
 
     private readonly INotificator _notificator = notificator;
+
     protected void Notify(ValidationResult validationResult)
     {
         foreach (var item in validationResult.Errors) Notify(item.ErrorMessage);

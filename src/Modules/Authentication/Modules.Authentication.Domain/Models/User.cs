@@ -21,7 +21,8 @@ public class User : Entity, IAggregateRoot
         Validate();
     }
 
-    protected User() { }
+    protected User()
+    { }
 
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;
@@ -101,4 +102,3 @@ public class User : Entity, IAggregateRoot
         AssertionConcern.EnsureLengthInRange(PasswordHash, 8, 100, "Password must be between 8 and 100 characters.");
     }
 }
-

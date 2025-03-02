@@ -12,6 +12,7 @@ public class UserToken : Entity
         ExpiresAt = DateTime.Now.AddMinutes(8);
         Validate();
     }
+
     public Guid UserId { get; private set; }
     public DateTime ExpiresAt { get; private set; }
     public string UserEmail { get; private set; } = string.Empty;

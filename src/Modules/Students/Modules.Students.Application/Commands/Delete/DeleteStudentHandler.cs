@@ -10,10 +10,11 @@ public sealed class DeleteStudentHandler(INotificator notificator,
                                        : CommandHandler<DeleteStudentCommand, DeleteStudentResponse>(notificator)
 {
     private readonly IStudentRepository _studentRepository = studentRepository;
+
     public override async Task<Response<DeleteStudentResponse>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
     {
         var student = await _studentRepository.GetByIdAsync(request.StudentId);
-        if(student is null)
+        if (student is null)
         {
             Notify("Student not found.");
             return Response<DeleteStudentResponse>.Failure(GetNotifications(), code: 404);
@@ -22,6 +23,5 @@ public sealed class DeleteStudentHandler(INotificator notificator,
         await _studentRepository.DeleteAsync(request.StudentId);
 
         return Response<DeleteStudentResponse>.Success(null, 204);
-
     }
 }

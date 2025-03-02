@@ -42,7 +42,6 @@ public sealed class CreateStudentValidation : AbstractValidator<CreateStudentCom
         if (number.Length != 11)
             return false;
 
-
         var numbers = number.Select(digit => int.Parse(digit.ToString())).ToArray();
 
         int sum = 0;

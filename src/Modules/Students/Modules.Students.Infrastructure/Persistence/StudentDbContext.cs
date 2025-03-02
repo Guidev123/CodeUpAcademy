@@ -7,9 +7,8 @@ namespace Modules.Students.Infrastructure.Persistence;
 
 public sealed class StudentDbContext : DbContext
 {
-    public StudentDbContext(DbContextOptions<StudentDbContext> options):base(options)
+    public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
     {
-        
     }
 
     public DbSet<Student> Students { get; set; } = null!;

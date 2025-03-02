@@ -21,6 +21,7 @@ public sealed class ForgotPasswordHandler(INotificator notificator,
     private readonly IEmailService _emailService = emailService;
     private readonly IHasherService _hasherService = hasherService;
     private readonly IUnitOfWork _uow = uow;
+
     public override async Task<Response<ForgotPasswordResponse>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
     {
         if (!ExecuteValidation(new ForgotPasswordValidation(), request))

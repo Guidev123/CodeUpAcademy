@@ -1,5 +1,4 @@
-﻿
-namespace CodeUp.Common.Notifications;
+﻿namespace CodeUp.Common.Notifications;
 
 public sealed class Notificator() : INotificator
 {

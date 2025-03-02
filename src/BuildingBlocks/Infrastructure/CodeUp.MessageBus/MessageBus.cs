@@ -36,7 +36,7 @@ public sealed class MessageBus : IMessageBus
         TryConnect();
         if (_bus is null)
             throw new InvalidOperationException("Bus is not connected.");
-        
+
         await _bus.PubSub.PublishAsync(message);
     }
 
@@ -93,7 +93,6 @@ public sealed class MessageBus : IMessageBus
 
         var disposable = _bus.Rpc.RespondAsync(responder);
         return disposable.GetAwaiter().GetResult();
-
     }
 
     private void TryConnect()

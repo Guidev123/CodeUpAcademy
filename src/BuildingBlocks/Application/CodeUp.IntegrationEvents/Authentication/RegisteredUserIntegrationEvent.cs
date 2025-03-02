@@ -13,6 +13,7 @@ public class RegisteredUserIntegrationEvent : IntegrationEvent
         BirthDate = birthDate;
         Type = type;
     }
+
     public Guid Id { get; private set; }
     public string FirstName { get; private set; } = string.Empty;
     public string LastName { get; private set; } = string.Empty;

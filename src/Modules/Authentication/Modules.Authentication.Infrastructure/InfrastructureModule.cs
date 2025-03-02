@@ -30,7 +30,7 @@ public static class InfrastructureModule
         services.AddTransient<ITokenService, TokenService>();
 
     public static void AddUserService(this IServiceCollection services)
-        => services.AddTransient<IUserService, UserService>();  
+        => services.AddTransient<IUserService, UserService>();
 
     public static void AddPasswordHasherService(this IServiceCollection services)
         => services.AddTransient<IHasherService, HasherService>();

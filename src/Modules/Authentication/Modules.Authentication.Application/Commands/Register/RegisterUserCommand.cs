@@ -8,4 +8,4 @@ public record RegisterUserCommand(
     string Email, string Phone,
     string Document, DateTime BirthDate,
     string Password, string ConfirmPassword
-    ): Command<LoginResponseDTO>;
+    ) : Command<LoginResponseDTO>;

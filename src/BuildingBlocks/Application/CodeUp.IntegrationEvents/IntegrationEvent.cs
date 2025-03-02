@@ -4,5 +4,5 @@ namespace CodeUp.IntegrationEvents;
 
 public abstract class IntegrationEvent : Event
 {
-    public DateOnly OccuredAt { get; private set; }
+    public DateTime OccuredAt { get; private set; }
 }

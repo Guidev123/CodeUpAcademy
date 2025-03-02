@@ -24,7 +24,7 @@ public sealed class GetUserByIdHandler(IUserRepository userRepository,
         }
 
         var user = await _userRepository.GetByIdAsync(userId.Value);
-        if(user is null)
+        if (user is null)
         {
             Notify("User not found");
             return Response<GetUserByIdResponse>.Failure(GetNotifications(), code: 404);

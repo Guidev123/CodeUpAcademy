@@ -52,7 +52,7 @@ public sealed class AddProfilePictureHandler(INotificator notificator,
         student.SetProfilePicture(imageUrl);
         _studentRepository.Update(student);
 
-        if(!await _studentRepository.SaveChangesAsync())
+        if (!await _studentRepository.SaveChangesAsync())
         {
             Notify("Fail to persist data.");
             return Response<AddProfilePictureResponse>.Failure(GetNotifications());

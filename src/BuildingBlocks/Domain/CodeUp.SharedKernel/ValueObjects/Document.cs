@@ -1,6 +1,4 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace CodeUp.SharedKernel.ValueObjects;
+﻿namespace CodeUp.SharedKernel.ValueObjects;
 
 public record Document : ValueObject
 {
@@ -57,5 +55,4 @@ public record Document : ValueObject
         "44444444444", "55555555555", "66666666666", "77777777777",
         "88888888888", "99999999999"
     };
-
 }

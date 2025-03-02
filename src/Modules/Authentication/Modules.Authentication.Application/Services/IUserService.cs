@@ -3,5 +3,6 @@
 public interface IUserService
 {
     Guid? GetUserId();
+
     IReadOnlyDictionary<string, string> GetUserClaims();
 }
