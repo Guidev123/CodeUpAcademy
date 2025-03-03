@@ -10,6 +10,6 @@ public sealed class Notificator() : INotificator
     public void HandleNotification(Notification notification)
         => _notifications.Add(notification);
 
-    public bool HasNotification(Notification notification)
+    public bool HasNotification()
         => _notifications.Count != 0;
 }

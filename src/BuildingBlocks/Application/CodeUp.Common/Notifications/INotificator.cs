@@ -6,5 +6,5 @@ public interface INotificator
 
     void HandleNotification(Notification notification);
 
-    bool HasNotification(Notification notification);
+    bool HasNotification();
 }
