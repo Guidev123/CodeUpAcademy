@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CodeUp.Common.Abstractions;
 
-public abstract class QueryHandler<TQuery, TResult>(INotificator notificator) : IQueryHandler<TQuery, TResult>
+public abstract class QueryHandler<TQuery, TResult>(INotificator notificator) : IRequestHandler<TQuery, Response<TResult>>
     where TQuery : IRequest<Response<TResult>>
 {
     public abstract Task<Response<TResult>> Handle(TQuery request, CancellationToken cancellationToken);
@@ -22,7 +22,7 @@ public abstract class QueryHandler<TQuery, TResult>(INotificator notificator) : 
     protected void Notify(string message) => _notificator.HandleNotification(new(message));
 }
 
-public abstract class PagedQueryHandler<TQuery, TResult>(INotificator notificator) : IPagedQueryHandler<TQuery, TResult>
+public abstract class PagedQueryHandler<TQuery, TResult>(INotificator notificator) : IRequestHandler<TQuery, PagedResponse<TResult>>
     where TQuery : IRequest<PagedResponse<TResult>>
 {
     public abstract Task<PagedResponse<TResult>> Handle(TQuery request, CancellationToken cancellationToken);
