@@ -32,7 +32,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
         var userExists = await _userRepository.GetByEmailAsync(request.Email);
         if (userExists is not null)
         {
-            Notify("User already exists");
+            Notify("Something failed during registration.");
             return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
