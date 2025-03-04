@@ -56,7 +56,7 @@ public sealed class RegisterUserHandler(IUserRepository userRepository,
             return Response<LoginResponseDTO>.Failure(GetNotifications());
         }
 
-        var userRole = User.AddRole(user.Id, role.Id);
+        var userRole = user.AddRole(user.Id, role.Id);
 
         await _userRepository.CreateUserRoleAsync(userRole);
 

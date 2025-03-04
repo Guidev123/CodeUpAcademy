@@ -5,6 +5,10 @@ namespace Modules.Authentication.Domain.Models;
 
 public class User : Entity, IAggregateRoot
 {
+    private const int MAX_ACCESS_FAILED_COUNT = 5;
+    private const int LOCKOUT_TIME_IN_MINUTES = 10;
+    private const int MIN_AGE = 16;
+
     public User(string firstName, string lastName, string email, string phone, DateTime birthDate, string passwordHash)
     {
         FirstName = firstName;
@@ -61,7 +65,7 @@ public class User : Entity, IAggregateRoot
 
     public void AddAccessFailedCount()
     {
-        if (AccessFailedCount >= 5)
+        if (AccessFailedCount >= MAX_ACCESS_FAILED_COUNT)
         {
             BlockAccount();
             return;
@@ -73,14 +77,14 @@ public class User : Entity, IAggregateRoot
 
     private void BlockAccount()
     {
-        LockoutEnd = DateTime.Now.AddMinutes(10);
+        LockoutEnd = DateTime.Now.AddMinutes(LOCKOUT_TIME_IN_MINUTES);
         LastLogin = DateTime.Now;
         IsLockedOut = true;
     }
 
     public void RegisterLogin() => LastLogin = DateTime.Now;
 
-    public static UserRole AddRole(Guid userId, Guid roleId) => new(roleId, userId);
+    public UserRole AddRole(Guid userId, Guid roleId) => new(roleId, userId);
 
     public void UpdatePassword(string password) => PasswordHash = password;
 
@@ -96,7 +100,7 @@ public class User : Entity, IAggregateRoot
 
         AssertionConcern.EnsureNotNull(Phone, "Phone cannot be null.");
 
-        AssertionConcern.EnsureTrue(BirthDate <= DateTime.Today.AddYears(-16), "User must be at least 16 years old.");
+        AssertionConcern.EnsureTrue(BirthDate <= DateTime.Today.AddYears(-MIN_AGE), "User must be at least 16 years old.");
 
         AssertionConcern.EnsureNotEmpty(PasswordHash, "Password cannot be empty.");
         AssertionConcern.EnsureLengthInRange(PasswordHash, 8, 100, "Password must be between 8 and 100 characters.");
