@@ -5,7 +5,7 @@ public class PagedResponse<TData> : Response<TData>
     private const int DEFAULT_PAGE_SIZE = 10;
     private const int DEFAULT_PAGE = 1;
 
-    public PagedResponse()
+    protected PagedResponse()
     { }
 
     protected PagedResponse(
