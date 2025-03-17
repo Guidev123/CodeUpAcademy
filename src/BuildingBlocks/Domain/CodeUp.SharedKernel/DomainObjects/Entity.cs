@@ -14,6 +14,8 @@ public abstract class Entity
     public bool IsDeleted { get; private set; }
     public DateTime? DeletedAt { get; private set; }
 
+    public abstract void Validate();
+
     public override bool Equals(object? obj)
     {
         var compareTo = obj as Entity;

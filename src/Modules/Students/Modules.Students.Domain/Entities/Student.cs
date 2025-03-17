@@ -35,7 +35,7 @@ public class Student : Entity, IAggregateRoot
         ProfilePicture = picture;
     }
 
-    private void Validate()
+    public override void Validate()
     {
         AssertionConcern.EnsureNotEmpty(FirstName, "First name cannot be empty.");
         AssertionConcern.EnsureNotEmpty(LastName, "Last name cannot be empty.");

@@ -29,7 +29,7 @@ public class Address : Entity
     public Guid StudentId { get; private set; }
     public Student Student { get; private set; } = null!;
 
-    private void Validate()
+    public override void Validate()
     {
         AssertionConcern.EnsureNotEmpty(Street, "Street cannot be empty.");
         AssertionConcern.EnsureLengthInRange(Street, 2, 100, "Street must be between 2 and 100 characters.");

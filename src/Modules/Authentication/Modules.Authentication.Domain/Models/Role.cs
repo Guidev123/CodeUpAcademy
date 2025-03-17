@@ -12,5 +12,6 @@ public class Role : Entity
 
     public string Name { get; private set; } = string.Empty;
 
-    public void Validate() => AssertionConcern.EnsureNotEmpty(Name, "The name cannot be empty.");
+    public override void Validate()
+        => AssertionConcern.EnsureNotEmpty(Name, "The name cannot be empty.");
 }

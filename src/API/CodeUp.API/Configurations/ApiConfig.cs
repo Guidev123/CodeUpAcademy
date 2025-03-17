@@ -1,4 +1,5 @@
-﻿using CodeUp.Common.Extensions;
+﻿using CodeUp.API.Middlewares;
+using CodeUp.Common.Extensions;
 using CodeUp.Common.Notifications;
 using CodeUp.Email;
 using CodeUp.Email.Models;
@@ -21,6 +22,11 @@ public static class ApiConfig
         builder.AddNotifications();
         builder.AddHandlers();
         builder.AddMessageBusConfiguration();
+    }
+
+    public static void AddCustomMiddlewares(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddTransient<GlobalExceptionMiddleware>();
     }
 
     public static void AddCorsConfig(this WebApplicationBuilder builder)
@@ -106,5 +112,10 @@ public static class ApiConfig
 
         app.UseAuthentication();
         app.UseAuthorization();
+    }
+
+    public static void UseCustomMiddlewares(this IApplicationBuilder app)
+    {
+        app.UseMiddleware<GlobalExceptionMiddleware>();
     }
 }

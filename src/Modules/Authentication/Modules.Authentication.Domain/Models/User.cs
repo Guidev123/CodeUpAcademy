@@ -88,7 +88,7 @@ public class User : Entity, IAggregateRoot
 
     public void UpdatePassword(string password) => PasswordHash = password;
 
-    public void Validate()
+    public override void Validate()
     {
         AssertionConcern.EnsureNotEmpty(FirstName, "First name cannot be empty.");
         AssertionConcern.EnsureLengthInRange(FirstName, 2, 50, "First name must be between 2 and 50 characters.");

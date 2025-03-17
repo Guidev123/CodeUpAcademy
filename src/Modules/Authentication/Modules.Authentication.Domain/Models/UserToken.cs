@@ -18,7 +18,7 @@ public class UserToken : Entity
     public string UserEmail { get; private set; } = string.Empty;
     public string Token { get; private set; } = string.Empty;
 
-    public void Validate()
+    public override void Validate()
     {
         AssertionConcern.EnsureNotEmpty(UserEmail, "User email cannot be empty.");
         AssertionConcern.EnsureMatchesPattern(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", UserEmail, "Invalid email format.");

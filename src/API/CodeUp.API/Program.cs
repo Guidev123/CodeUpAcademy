@@ -6,6 +6,7 @@ using Modules.Students.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
+builder.AddCustomMiddlewares();
 builder.AddCorsConfig();
 builder.AddSecurity();
 builder.AddCommonConfig();
@@ -14,6 +15,7 @@ builder.Services.AddAutheticationModule(builder.Configuration);
 builder.Services.AddStudentModule(builder.Configuration);
 
 var app = builder.Build();
+app.UseCustomMiddlewares();
 app.UseSecurity();
 app.MapEndpoints();
 app.Run();

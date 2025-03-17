@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq.Expressions;
+using System.Text.RegularExpressions;
 
 namespace CodeUp.SharedKernel.DomainObjects;
 
@@ -95,3 +96,4 @@ public static class AssertionConcern
         if (!value) throw new DomainException(message);
     }
 }
+
