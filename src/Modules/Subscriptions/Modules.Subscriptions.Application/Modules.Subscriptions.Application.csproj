@@ -6,4 +6,19 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Commands\Subscriptions\" />
+    <Folder Include="Commands\Vouchers\" />
+    <Folder Include="Queries\Subscriptions\" />
+    <Folder Include="Queries\Vouchers\" />
+    <Folder Include="Queries\Orders\" />
+    <Folder Include="Mappers\" />
+    <Folder Include="Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.Common\CodeUp.Common.csproj" />
+    <ProjectReference Include="..\Modules.Subscriptions.Domain\Modules.Subscriptions.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
