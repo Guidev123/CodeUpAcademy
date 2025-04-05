@@ -15,7 +15,8 @@ public class Order : Entity, IAggregateRoot
         Status = OrderStatusEnum.Created;
         Validate();
     }
-    protected Order() { }
+    protected Order()
+    { }
 
     public Guid StudentId { get; private set; }
     public Guid? VoucherId { get; private set; }

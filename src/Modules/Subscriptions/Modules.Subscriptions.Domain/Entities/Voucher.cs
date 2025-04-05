@@ -17,6 +17,9 @@ public class Voucher : Entity
         Validate();
     }
 
+    protected Voucher()
+    { }
+
     public string Code { get; private set; } = string.Empty;
     public decimal? DiscountValue { get; private set; }
     public int? DiscountPercentage { get; private set; }

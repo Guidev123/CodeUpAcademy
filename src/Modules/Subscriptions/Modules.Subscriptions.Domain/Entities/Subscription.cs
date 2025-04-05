@@ -15,7 +15,8 @@ public class Subscription : Entity, IAggregateRoot
         ExpiresAt = DateTime.Now.AddDays(durationInDays);
     }
 
-    protected Subscription() { }    
+    protected Subscription()
+    { }    
 
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;

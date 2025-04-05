@@ -19,11 +19,14 @@ public class Student : Entity, IAggregateRoot
         Validate();
     }
 
-    public string FirstName { get; private set; }
-    public string LastName { get; private set; }
-    public Email Email { get; private set; }
-    public Phone Phone { get; private set; }
-    public Document Document { get; private set; }
+    protected Student()
+    { }
+
+    public string FirstName { get; private set; } = string.Empty;
+    public string LastName { get; private set; } = string.Empty;
+    public Email Email { get; private set; } = null!;
+    public Phone Phone { get; private set; } = null!;
+    public Document Document { get; private set; } = null!;
     public DateTime BirthDate { get; private set; }
     public string? ProfilePicture { get; private set; }
     public StudentTypeEnum Type { get; private set; }
