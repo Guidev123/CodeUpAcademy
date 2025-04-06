@@ -1,8 +1,6 @@
-﻿using MediatR;
+﻿namespace CodeUp.SharedKernel.DomainObjects;
 
-namespace CodeUp.SharedKernel.DomainObjects;
-
-public abstract record Event : INotification
+public abstract record Event
 {
     protected Event()
     {
