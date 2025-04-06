@@ -2,7 +2,7 @@
 
 namespace CodeUp.IntegrationEvents;
 
-public abstract class IntegrationEvent : Event
+public abstract record IntegrationEvent : Event
 {
-    public DateTime OccuredAt { get; private set; }
+
 }

@@ -1,5 +1,5 @@
-﻿using CodeUp.Common.Responses;
-using MediatR;
+﻿using CodeUp.Common.Abstractions.Mediator;
+using CodeUp.Common.Responses;
 
 namespace CodeUp.Common.Abstractions;
 
