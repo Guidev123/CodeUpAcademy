@@ -1,4 +1,6 @@
-﻿namespace CodeUp.SharedKernel.ValueObjects;
+﻿using CodeUp.SharedKernel.DomainObjects;
+
+namespace CodeUp.SharedKernel.ValueObjects;
 
 public record Document : ValueObject
 {
@@ -6,7 +8,7 @@ public record Document : ValueObject
 
     public Document(string number)
     {
-        if (!Validate(number)) throw new InvalidDataException("Invalid Document.");
+        if (!Validate(number)) throw new DomainException("Invalid Document.");
         Number = number;
     }
     protected Document() { }

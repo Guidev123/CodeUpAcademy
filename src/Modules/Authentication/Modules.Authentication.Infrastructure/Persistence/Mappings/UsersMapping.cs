@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Modules.Authentication.Domain.Models;
+using Modules.Authentication.Domain.Entities;
 
 namespace Modules.Authentication.Infrastructure.Persistence.Mappings;
 
@@ -42,24 +42,6 @@ public sealed class UsersMapping : IEntityTypeConfiguration<User>
 
         builder.Property(u => u.BirthDate)
             .IsRequired()
-            .HasColumnType("datetime2");
-
-        builder.Property(u => u.PasswordHash)
-            .IsRequired().HasColumnType("VARCHAR")
-            .HasMaxLength(500);
-
-        builder.Property(u => u.AccessFailedCount)
-            .IsRequired();
-
-        builder.Property(u => u.IsLockedOut)
-            .IsRequired();
-
-        builder.Property(u => u.LockoutEnd)
-            .IsRequired(false)
-            .HasColumnType("datetime2");
-
-        builder.Property(u => u.LastLogin)
-            .IsRequired(false)
             .HasColumnType("datetime2");
 
         builder.Property(u => u.EmailConfirmed)

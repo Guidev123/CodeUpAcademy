@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using CodeUp.SharedKernel.DomainObjects;
+using System.Text.RegularExpressions;
 
 namespace CodeUp.SharedKernel.ValueObjects;
 
@@ -9,7 +10,7 @@ public record Email : ValueObject
     protected Email() { }
     public Email(string address)
     {
-        if (!Validate(address)) throw new InvalidDataException("Invalid email format");
+        if (!Validate(address)) throw new DomainException("Invalid Email.");
         Address = address;
     }
     public string Address { get; } = string.Empty;

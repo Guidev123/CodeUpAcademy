@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\Subscriptions\" />
-    <Folder Include="Commands\Vouchers\" />
-    <Folder Include="Queries\Subscriptions\" />
-    <Folder Include="Queries\Vouchers\" />
-    <Folder Include="Queries\Orders\" />
-    <Folder Include="Mappers\" />
-    <Folder Include="Queries\" />
+    <Compile Remove="Commands\**" />
+    <Compile Remove="Mappers\**" />
+    <Compile Remove="Queries\**" />
+    <EmbeddedResource Remove="Commands\**" />
+    <EmbeddedResource Remove="Mappers\**" />
+    <EmbeddedResource Remove="Queries\**" />
+    <None Remove="Commands\**" />
+    <None Remove="Mappers\**" />
+    <None Remove="Queries\**" />
   </ItemGroup>
 
   <ItemGroup>

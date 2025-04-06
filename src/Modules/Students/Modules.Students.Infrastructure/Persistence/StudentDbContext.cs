@@ -5,12 +5,8 @@ using System.Reflection;
 
 namespace Modules.Students.Infrastructure.Persistence;
 
-public sealed class StudentDbContext : DbContext
+public sealed class StudentDbContext(DbContextOptions<StudentDbContext> options) : DbContext(options)
 {
-    public StudentDbContext(DbContextOptions<StudentDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<Student> Students { get; set; } = null!;
     public DbSet<Address> Address { get; set; } = null!;
 
@@ -18,13 +14,17 @@ public sealed class StudentDbContext : DbContext
     {
         modelBuilder.Ignore<Event>();
 
-        modelBuilder.HasDefaultSchema("students");
+        var properties = modelBuilder.Model.GetEntityTypes()
+            .SelectMany(p => p.GetProperties())
+            .Where(p => p.ClrType == typeof(string)
+            && p.GetColumnType() == null);
 
-        var properties = modelBuilder.Model.GetEntityTypes().SelectMany(x => x.GetProperties()).Where(x => x.ClrType == typeof(string));
-        foreach (var property in properties)
-            property.SetColumnType("VARCHAR(160)");
+        foreach (var item in properties)
+        {
+            item.SetColumnType("VARCHAR(160)");
+            item.SetIsUnicode(false);
+        }
 
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-        base.OnModelCreating(modelBuilder);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using CodeUp.SharedKernel.DomainObjects;
+using System.Text.RegularExpressions;
 
 namespace CodeUp.SharedKernel.ValueObjects;
 
@@ -9,10 +10,10 @@ public record Phone : ValueObject
     public Phone(string number)
     {
         if (string.IsNullOrEmpty(number))
-            throw new ArgumentException("Phone number can not be empty.", nameof(number));
+            throw new DomainException("Phone number can not be empty.");
 
         if (!IsValidPhoneNumber(number))
-            throw new ArgumentException("Your phone number should be in this format: (XX) XXXXX-XXXX.", nameof(number));
+            throw new DomainException("Your phone number should be in this format: (XX) XXXXX-XXXX.");
 
         Number = number;
     }

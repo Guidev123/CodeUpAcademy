@@ -1,12 +1,8 @@
-﻿using Modules.Subscriptions.Domain.Entities;
+﻿using CodeUp.SharedKernel.Repositories;
+using Modules.Subscriptions.Domain.Entities;
 
 namespace Modules.Subscriptions.Domain.Repositories;
 
-public interface IOrderRepository
+public interface IOrderRepository : IRepository<Order>
 {
-    Task CreateAsync(Order order);
-
-    Task<List<Order>> GetAllByStudentId(Guid studentId);
-
-    void Update(Order order);
 }

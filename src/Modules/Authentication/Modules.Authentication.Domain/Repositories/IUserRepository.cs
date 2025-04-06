@@ -1,32 +1,9 @@
-﻿using Modules.Authentication.Domain.Models;
+﻿using CodeUp.SharedKernel.Repositories;
+using Modules.Authentication.Domain.Entities;
 
 namespace Modules.Authentication.Domain.Repositories;
 
-public interface IUserRepository : IDisposable
+public interface IUserRepository : IRepository<User>
 {
-    Task CreateAsync(User user);
-
-    Task CreateUserRoleAsync(UserRole role);
-
-    Task CreateUserTokenAsync(UserToken userToken);
-
-    Task<User?> GetByIdAsync(Guid id);
-
-    Task<User?> GetByEmailAsync(string email);
-
-    Task<UserToken?> GetTokenByUserIdAsync(Guid userId);
-
-    Task<ICollection<string>> GetUserRoleNamesByUserIdAsync(Guid userId);
-
-    Task<List<UserRole>> GetUserRolesAsync(Guid userId);
-
-    Task<Role?> GetRoleByNameAsync(string roleName);
-
-    void Update(User user);
-
-    Task DeleteAsync(User user);
-
-    void DeleteUserRoles(UserRole roles);
-
-    void DeleteUserToken(UserToken userToken);
+    
 }

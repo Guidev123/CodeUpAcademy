@@ -9,11 +9,11 @@ public static class InfrastructureModule
 {
     public static void AddSubscriptionModule(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddRepositories();
     }
 
     public static void AddRepositories(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IOrderRepository, OrderRepository>();
     }
 }
