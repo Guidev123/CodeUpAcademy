@@ -1,4 +1,4 @@
-﻿namespace CodeUp.Common.Abstractions;
+﻿namespace CodeUp.Common.Abstractions.Commands;
 
 public abstract record Command<TResult> : ICommand<TResult>
 {
