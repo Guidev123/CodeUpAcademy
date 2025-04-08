@@ -1,15 +1,17 @@
+using Modules.Authentication.API.Configurations;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
+builder.AddSwagger();
+builder.AddSecurity();
+
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
+app.MapOpenApi();
 
-app.UseHttpsRedirection();
-
+app.UseCustomSwagger();
+app.UseSecurity();
 
 app.Run();
