@@ -1,4 +1,5 @@
 using Modules.Authentication.API.Configurations;
+using Modules.Authentication.API.Endpoints;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ var app = builder.Build();
 
 app.MapOpenApi();
 
+app.MapEndpoints();
 app.UseCustomSwagger();
 app.UseSecurity();
 
