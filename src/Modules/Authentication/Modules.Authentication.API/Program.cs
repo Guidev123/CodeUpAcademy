@@ -13,7 +13,7 @@ var app = builder.Build();
 app.MapOpenApi();
 
 app.MapEndpoints();
-app.UseCustomSwagger();
+app.UseCustomSwagger(builder);
 app.UseSecurity();
 
 app.Run();

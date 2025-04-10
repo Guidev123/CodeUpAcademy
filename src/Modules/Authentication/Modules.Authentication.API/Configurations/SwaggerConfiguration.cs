@@ -8,16 +8,8 @@ namespace Modules.Authentication.API.Configurations
         public static void AddSwagger(this WebApplicationBuilder builder)
         {
             var appSettingsSection = builder.Configuration.GetSection(nameof(KeycloakExtension));
-            if (!appSettingsSection.Exists())
-            {
-                throw new InvalidOperationException();
-            }
-
-            var appSettings = appSettingsSection.Get<KeycloakExtension>();
-            if (string.IsNullOrEmpty(appSettings?.AuthorizationUrl))
-            {
-                throw new InvalidOperationException();
-            }
+            var appSettings = appSettingsSection.Get<KeycloakExtension>()
+                ?? throw new InvalidOperationException("Keycloak settings not found.");
 
             builder.Services.Configure<KeycloakExtension>(appSettingsSection);
 
@@ -31,44 +23,53 @@ namespace Modules.Authentication.API.Configurations
                     Type = SecuritySchemeType.OAuth2,
                     Flows = new OpenApiOAuthFlows
                     {
-                        Implicit = new OpenApiOAuthFlow
+                        AuthorizationCode = new OpenApiOAuthFlow
                         {
                             AuthorizationUrl = new Uri(appSettings.AuthorizationUrl),
+                            TokenUrl = new Uri(appSettings.TokenUrl),
                             Scopes = new Dictionary<string, string>
-                        {
-                            { "openid", "OpenID Connect" },
-                            { "profile", "Profile" }
-                        }
+                            {
+                                { "openid", "OpenID Connect" },
+                                { "profile", "Profile" }
+                            }
                         }
                     }
                 });
 
                 var securityRequirement = new OpenApiSecurityRequirement
-            {
                 {
-                    new OpenApiSecurityScheme
                     {
-                        Reference = new OpenApiReference
+                        new OpenApiSecurityScheme
                         {
-                            Type = ReferenceType.SecurityScheme,
-                            Id = "Keycloak"
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Keycloak"
+                            },
+                            In = ParameterLocation.Header,
+                            Name = "Bearer",
+                            Scheme = "Bearer"
                         },
-                        In = ParameterLocation.Header,
-                        Name = "Bearer",
-                        Scheme = "Bearer"
-                    },
-                    Array.Empty<string>()
-                }
-            };
+                        Array.Empty<string>()
+                    }
+                };
                 c.AddSecurityRequirement(securityRequirement);
             });
         }
-        public static void UseCustomSwagger(this WebApplication app)
+
+        public static void UseCustomSwagger(this WebApplication app, WebApplicationBuilder builder)
         {
+            var appSettingsSection = builder.Configuration.GetSection(nameof(KeycloakExtension));
+            var appSettings = appSettingsSection.Get<KeycloakExtension>()
+                ?? throw new InvalidOperationException("Keycloak settings not found.");
+
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
+                c.OAuthClientId(appSettings.ClientId);
+                c.OAuthUsePkce();
+                c.OAuthScopeSeparator(" ");
             });
         }
     }

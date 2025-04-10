@@ -15,7 +15,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Application\CodeUp.Common\CodeUp.Common.csproj" />
-    <ProjectReference Include="..\Modules.Authentication.Application\Modules.Authentication.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Application\Commands\" />
+    <Folder Include="Application\Queries\" />
   </ItemGroup>
 
 </Project>

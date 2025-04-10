@@ -17,12 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Courses", "Courses", "{B6CA
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{21F70157-9403-4A1B-842A-FB8695142134}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Authentication.Domain", "src\Modules\Authentication\Modules.Authentication.Domain\Modules.Authentication.Domain.csproj", "{6067C69C-B40B-4256-AC9C-237D3A76204D}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Authentication.Infrastructure", "src\Modules\Authentication\Modules.Authentication.Infrastructure\Modules.Authentication.Infrastructure.csproj", "{2AF2938A-2958-4981-BE48-CFDAEF0FD65B}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Authentication.Application", "src\Modules\Authentication\Modules.Authentication.Application\Modules.Authentication.Application.csproj", "{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Courses.Application", "src\Modules\Courses\Modules.Courses.Application\Modules.Courses.Application.csproj", "{FDD079A0-76B8-467A-A5DF-DDC63E0E0377}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Modules.Courses.Infrastructure", "src\Modules\Courses\Modules.Courses.Infrastructure\Modules.Courses.Infrastructure.csproj", "{A7F5C6DA-3503-4930-855A-518A06586E09}"
@@ -71,18 +65,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{6067C69C-B40B-4256-AC9C-237D3A76204D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6067C69C-B40B-4256-AC9C-237D3A76204D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6067C69C-B40B-4256-AC9C-237D3A76204D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6067C69C-B40B-4256-AC9C-237D3A76204D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2AF2938A-2958-4981-BE48-CFDAEF0FD65B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2AF2938A-2958-4981-BE48-CFDAEF0FD65B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2AF2938A-2958-4981-BE48-CFDAEF0FD65B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2AF2938A-2958-4981-BE48-CFDAEF0FD65B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FDD079A0-76B8-467A-A5DF-DDC63E0E0377}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FDD079A0-76B8-467A-A5DF-DDC63E0E0377}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDD079A0-76B8-467A-A5DF-DDC63E0E0377}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -166,9 +148,6 @@ Global
 		{344FEB14-848E-47C6-9D8F-9F5E041F8AB4} = {0B4A5624-4FB6-4F7C-A1C3-271F73B33BE5}
 		{B6CA884F-4185-47C8-A151-F94767E6212F} = {0B4A5624-4FB6-4F7C-A1C3-271F73B33BE5}
 		{21F70157-9403-4A1B-842A-FB8695142134} = {0B4A5624-4FB6-4F7C-A1C3-271F73B33BE5}
-		{6067C69C-B40B-4256-AC9C-237D3A76204D} = {21F70157-9403-4A1B-842A-FB8695142134}
-		{2AF2938A-2958-4981-BE48-CFDAEF0FD65B} = {21F70157-9403-4A1B-842A-FB8695142134}
-		{5B9E46E1-E44D-4B24-AF32-6CA759D28B2F} = {21F70157-9403-4A1B-842A-FB8695142134}
 		{FDD079A0-76B8-467A-A5DF-DDC63E0E0377} = {B6CA884F-4185-47C8-A151-F94767E6212F}
 		{A7F5C6DA-3503-4930-855A-518A06586E09} = {B6CA884F-4185-47C8-A151-F94767E6212F}
 		{3D572DD6-9F71-4AAF-9ACC-D84FDAE1E45B} = {B6CA884F-4185-47C8-A151-F94767E6212F}
