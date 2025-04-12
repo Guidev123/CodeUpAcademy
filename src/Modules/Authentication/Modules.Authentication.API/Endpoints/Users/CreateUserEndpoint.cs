@@ -1,5 +1,4 @@
-﻿
-namespace Modules.Authentication.API.Endpoints.Users
+﻿namespace Modules.Authentication.API.Endpoints.Users
 {
     public sealed class CreateUserEndpoint : IEndpoint
     {

@@ -34,14 +34,14 @@ namespace CodeUp.Common.Abstractions.Mediator
 
         private static List<Type> GetClassesImplementingInterface(Assembly assembly, Type typeToMatch)
         {
-             return assembly.ExportedTypes
-                .Where(type =>
-                {
-                    var genericInterfaceTypes = type.GetInterfaces().Where(x => x.IsGenericType).ToList();
-                    var implementRequestType = genericInterfaceTypes.Any(x => x.GetGenericTypeDefinition() == typeToMatch);
+            return assembly.ExportedTypes
+               .Where(type =>
+               {
+                   var genericInterfaceTypes = type.GetInterfaces().Where(x => x.IsGenericType).ToList();
+                   var implementRequestType = genericInterfaceTypes.Any(x => x.GetGenericTypeDefinition() == typeToMatch);
 
-                    return !type.IsInterface && !type.IsAbstract && implementRequestType;
-                }).ToList();
+                   return !type.IsInterface && !type.IsAbstract && implementRequestType;
+               }).ToList();
         }
     }
 }

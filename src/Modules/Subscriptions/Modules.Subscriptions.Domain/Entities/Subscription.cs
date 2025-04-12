@@ -16,7 +16,7 @@ public class Subscription : Entity, IAggregateRoot
     }
 
     protected Subscription()
-    { }    
+    { }
 
     public string Name { get; private set; } = string.Empty;
     public string Description { get; private set; } = string.Empty;

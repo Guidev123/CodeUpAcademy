@@ -15,6 +15,7 @@ public class Order : Entity, IAggregateRoot
         Status = OrderStatusEnum.Created;
         Validate();
     }
+
     protected Order()
     { }
 
@@ -27,7 +28,7 @@ public class Order : Entity, IAggregateRoot
     public decimal Discount { get; private set; }
     public decimal Price { get; private set; }
     public OrderStatusEnum Status { get; private set; }
-    public Subscription? Subscription { get; private set; } 
+    public Subscription? Subscription { get; private set; }
     public Voucher? Voucher { get; private set; }
 
     public void SetSubscription(Subscription subscription)

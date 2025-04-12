@@ -4,5 +4,4 @@ namespace CodeUp.IntegrationEvents;
 
 public abstract record IntegrationEvent : Event
 {
-
 }

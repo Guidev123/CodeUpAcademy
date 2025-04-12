@@ -1,6 +1,4 @@
-﻿using CodeUp.SharedKernel.Repositories;
-using Modules.Subscriptions.Domain.Entities;
-using Modules.Subscriptions.Domain.Repositories;
+﻿using Modules.Subscriptions.Domain.Repositories;
 
 namespace Modules.Subscriptions.Infrastructure.Persistence.Repositories;
 

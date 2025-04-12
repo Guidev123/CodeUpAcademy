@@ -46,5 +46,4 @@ public class Voucher : Entity
             AssertionConcern.EnsureTrue(DiscountPercentage.Value <= 100, "Discount percentage cannot exceed 100%.");
         }
     }
-
 }
